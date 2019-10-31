@@ -10,6 +10,7 @@ import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 
 // Assigned to Phil currently
 public class MineText {
@@ -35,6 +36,31 @@ public class MineText {
 		}
 
 	}
+	
+	public static ArrayList<String> readEntireFile() {
+		ArrayList<String> fileReadout = new ArrayList<>();
+		String fileName = "Minefield_Display.txt";
+		Path path = Paths.get("Minefield_Folder", fileName);
+		File file = path.toFile();
+
+		BufferedReader br;
+		try {
+			br = new BufferedReader(new FileReader(file));
+			String line = br.readLine();
+			while (line != null) {
+				fileReadout.add(line);
+				line = br.readLine();
+			}
+			br.close();
+			return fileReadout;
+		} catch (FileNotFoundException e) {
+			System.out.println("404 File not found");
+		} catch (IOException e) {
+			System.out.println("IOException, something's fucked. File was not read");
+		}
+		return fileReadout;
+
+	}
 
 	public static void writeToFile(Minefield minefield) {
 		String[][] minefieldArr = minefield.getMinefield();
@@ -48,10 +74,16 @@ public class MineText {
 		// This method will take the input from the reader (A,3 for instance) and then
 		// scan the (array?txt?) and determine whether or not to reveal things.
 		try {
-			output = new PrintWriter(new FileOutputStream(file, true));
-			for (int i = 0; i <= minefield.getWidth(); i++) {
-				for (int j = 0; j <= minefield.getHeight(); j++) {
-					if (i == 0 && j == 0) {
+			output = new PrintWriter(new FileOutputStream(file));
+			for (int i = 0; i < minefield.getWidth(); i++) {
+				for (int j = 0; j < minefield.getHeight(); j++) {
+					if (j == minefield.getHeight() -1) {
+						output.println("□");
+					}
+					else {
+						output.print("□");
+					}
+					/*if (i == 0 && j == 0) {
 						output.print(" ");
 					} else if (i == 0 && j != 0) {
 
@@ -68,7 +100,7 @@ public class MineText {
 						if (j == minefield.getHeight()) {
 							output.println("□");
 						}
-					}
+					}*/
 					// output.print("□");
 				}
 				// output.print("\b");

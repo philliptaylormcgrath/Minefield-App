@@ -1,5 +1,6 @@
 package co.grandcircus;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -11,7 +12,7 @@ public class MainApp {
 
 		String[][] minefield;
 		Minefield minefieldObject;
-		//displayMinefield(minefield);
+		// displayMinefield(minefield);
 		MineText.createMineDir();
 		MineText.createFile();
 
@@ -21,8 +22,8 @@ public class MainApp {
 		System.out.println("*** WELCOME TO MINEFIELD ***");
 		while (cont.equalsIgnoreCase("yes")) {
 			System.out.println();
-			int difficulty = Validator.getInt(scnr, "Pick your minefield:\n1. Easy\n2. Medium\n3. Hard\n4. Custom",
-					1, 4);
+			int difficulty = Validator.getInt(scnr, "Pick your minefield:\n1. Easy\n2. Medium\n3. Hard\n4. Custom", 1,
+					4);
 			switch (difficulty) {
 			case 1:
 			case 2:
@@ -30,17 +31,18 @@ public class MainApp {
 				minefieldObject = generateMinefield(difficulty);
 				minefield = minefieldObject.getMinefield();
 				MineText.writeToFile(minefieldObject);
-				for (String[] s: minefield) {
+				displayMinefield();
+				/*for (String[] s : minefield) {
 					System.out.println(Arrays.toString(s));
-				}
-				//System.out.println(Arrays.toString((Arrays.toString(minefield));
+				}*/
+				// System.out.println(Arrays.toString((Arrays.toString(minefield));
 				break;
 			case 4:
 				minefieldObject = generateCustomMinefield();
 				minefield = minefieldObject.getMinefield();
-				for (String[] s: minefield) {
+				/*for (String[] s : minefield) {
 					System.out.println(Arrays.toString(s));
-				}
+				}*/
 				break;
 			}
 			while (result.equals("")) {
@@ -54,12 +56,30 @@ public class MainApp {
 		scnr.close();
 	}
 
-	public static void displayMinefield(String[][] minefield) {
-		for (int i = 0; i < minefield.length; i++) {
-			for (int j = 0; j < minefield[i].length; j++) {
-				System.out.print(minefield[i][j]);
+	public static void displayMinefield() {
+		ArrayList<String> mineArrList = MineText.readEntireFile();
+		int rows = mineArrList.size();
+		int columns = mineArrList.get(0).length();
+		for (int i = 0; i <= rows; i++) {
+			for (int j = 0; j <= columns; j++) {
+				if (i == 0 && j == 0) {
+					System.out.print("___|");
+				} else if (i == 0 && j != 0) {
+					if (j == columns) {
+						System.out.printf("%-3s", "x" + j + "\n");
+					} else {
+						System.out.printf("%-3s|", "x" + j);
+					}
+				} else if (i != 0 && j == 0) {
+					System.out.printf("%-3s|", "y" + i);
+				} else if (i != 0 & j != 0) {
+					if (j == columns) {
+						System.out.printf("%-4s", " " + mineArrList.get(i-1).charAt(j-1) + " \n");
+					} else {
+						System.out.printf("%-4s", " " + mineArrList.get(i-1).charAt(j-1) + " ");
+					}
+				}
 			}
-			System.out.print("\n");
 		}
 	}
 
@@ -96,17 +116,20 @@ public class MainApp {
 		// 4. If not revealed:
 		// a. If trying to put flag, then put flag (F char)
 		// b. if not trying to put flag, then read Minefield object
-		// c. If square is a bomb, then explode and let them know they lost, display revealed array
+		// c. If square is a bomb, then explode and let them know they lost, display
+		// revealed array
 		// d. If square is not a bomb, reveal the square.
-		// e. If revealed square is blank, then reveal all of the adjacent numbered or blank squares
+		// e. If revealed square is blank, then reveal all of the adjacent numbered or
+		// blank squares
 		// 5. Start over
-		
-		int actionChoice = Validator.getInt(scnr, "Pick your action (enter number):\n1. Uncover Square\n2. Flag Square\n", 1, 2);
+
+		int actionChoice = Validator.getInt(scnr,
+				"Pick your action (enter number):\n1. Uncover Square\n2. Flag Square\n", 1, 2);
 		switch (actionChoice) {
 		case 1:
-			if (!MineText.readSquareFromFile().equals"(□") {
-				
-			}
+			// if (!MineText.readSquareFromFile().equals"(□") {
+
+			// }
 			break;
 		case 2:
 			break;
