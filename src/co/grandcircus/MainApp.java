@@ -10,7 +10,10 @@ public class MainApp {
 	public static void main(String[] args) {
 
 		String[][] minefield;
+		Minefield minefieldObject;
 		//displayMinefield(minefield);
+		MineText.createMineDir();
+		MineText.createFile();
 
 		String cont = "yes";
 		String result = "";
@@ -24,14 +27,17 @@ public class MainApp {
 			case 1:
 			case 2:
 			case 3:
-				minefield = generateMinefield(difficulty).getMinefield();
+				minefieldObject = generateMinefield(difficulty);
+				minefield = minefieldObject.getMinefield();
+				MineText.writeToFile(minefieldObject);
 				for (String[] s: minefield) {
 					System.out.println(Arrays.toString(s));
 				}
 				//System.out.println(Arrays.toString((Arrays.toString(minefield));
 				break;
 			case 4:
-				minefield = generateCustomMinefield().getMinefield();
+				minefieldObject = generateCustomMinefield();
+				minefield = minefieldObject.getMinefield();
 				for (String[] s: minefield) {
 					System.out.println(Arrays.toString(s));
 				}
@@ -88,12 +94,23 @@ public class MainApp {
 		// invalid and take new input
 		// a. If trying to put a flag on a flagged square, take new input
 		// 4. If not revealed:
-		// a. If trying to put flag, then put flag
+		// a. If trying to put flag, then put flag (F char)
 		// b. if not trying to put flag, then read Minefield object
 		// c. If square is a bomb, then explode and let them know they lost, display revealed array
 		// d. If square is not a bomb, reveal the square.
 		// e. If revealed square is blank, then reveal all of the adjacent numbered or blank squares
 		// 5. Start over
+		
+		int actionChoice = Validator.getInt(scnr, "Pick your action (enter number):\n1. Uncover Square\n2. Flag Square\n", 1, 2);
+		switch (actionChoice) {
+		case 1:
+			if (!MineText.readSquareFromFile().equals"(□") {
+				
+			}
+			break;
+		case 2:
+			break;
+		}
 	}
 
 }
