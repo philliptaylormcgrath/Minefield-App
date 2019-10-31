@@ -9,49 +9,19 @@ public class MainApp {
 	public static Scanner scnr = new Scanner(System.in);
 
 	public static void main(String[] args) {
-
-		String[][] minefield;
-		Minefield minefieldObject;
-		// displayMinefield(minefield);
+		Minefield minefield = null;
 		MineText.createMineDir();
 		MineText.createFile();
-
 		String cont = "yes";
-		String result = "";
 
 		System.out.println("*** WELCOME TO MINEFIELD ***");
 		while (cont.equalsIgnoreCase("yes")) {
 			System.out.println();
-			int difficulty = Validator.getInt(scnr, "Pick your minefield:\n1. Easy\n2. Medium\n3. Hard\n4. Custom", 1,
-					4);
-			switch (difficulty) {
-			case 1:
-			case 2:
-			case 3:
-				minefieldObject = generateMinefield(difficulty);
-				minefield = minefieldObject.getMinefield();
-				MineText.writeToFile(minefieldObject);
-				displayMinefield();
-				/*for (String[] s : minefield) {
-					System.out.println(Arrays.toString(s));
-				}*/
-				// System.out.println(Arrays.toString((Arrays.toString(minefield));
-				break;
-			case 4:
-				minefieldObject = generateCustomMinefield();
-				minefield = minefieldObject.getMinefield();
-				/*for (String[] s : minefield) {
-					System.out.println(Arrays.toString(s));
-				}*/
-				break;
-			}
-			while (result.equals("")) {
-
-			}
-			System.out.println("Do you want to continue? (yes/no)");
+			minefield = generateMinefield();
+			playMinefield(minefield);
+			System.out.println("Do you want to play again? (yes/no)");
 			cont = scnr.nextLine();
 		}
-
 		System.out.println("Bye!");
 		scnr.close();
 	}
@@ -74,17 +44,18 @@ public class MainApp {
 					System.out.printf("%-3s|", "y" + i);
 				} else if (i != 0 & j != 0) {
 					if (j == columns) {
-						System.out.printf("%-4s", " " + mineArrList.get(i-1).charAt(j-1) + " \n");
+						System.out.printf("%-4s", " " + mineArrList.get(i - 1).charAt(j - 1) + " \n");
 					} else {
-						System.out.printf("%-4s", " " + mineArrList.get(i-1).charAt(j-1) + " ");
+						System.out.printf("%-4s", " " + mineArrList.get(i - 1).charAt(j - 1) + " ");
 					}
 				}
 			}
 		}
 	}
 
-	public static Minefield generateMinefield(int difficulty) {
+	public static Minefield generateMinefield() {
 		Minefield minefield = null;
+		int difficulty = Validator.getInt(scnr, "Pick your minefield:\n1. Easy\n2. Medium\n3. Hard\n4. Custom", 1, 4);
 		switch (difficulty) {
 		case 1:
 			minefield = new Minefield(9, 9, 10);
@@ -95,45 +66,77 @@ public class MainApp {
 		case 3:
 			minefield = new Minefield(16, 30, 99);
 			break;
+		case 4:
+			int width = Validator.getInt(scnr, "Enter minefield width:\n", 3, 99);
+			int height = Validator.getInt(scnr, "Enter minefield height:\n", 3, 99);
+			int numBombs = Validator.getInt(scnr, "Enter number of bombs:\n", 1, height * width - 1);
+			minefield = new Minefield(width, height, numBombs);
+			return minefield;
 		}
-		return minefield;
-	}
-
-	public static Minefield generateCustomMinefield() {
-		int width = Validator.getInt(scnr, "Enter minefield width:\n", 3, 99);
-		int height = Validator.getInt(scnr, "Enter minefield height:\n", 3, 99);
-		int numBombs = Validator.getInt(scnr, "Enter number of bombs:\n", 1, height * width - 1);
-		Minefield minefield = new Minefield(width, height, numBombs);
 		return minefield;
 	}
 
 	public static void playMinefield(Minefield minefield) {
-		// 1. Ask uncover square or place flag
-		// 2. Read text file
-		// 3. If they enter a field that's already revealed, then let them know it was
-		// invalid and take new input
-		// a. If trying to put a flag on a flagged square, take new input
-		// 4. If not revealed:
-		// a. If trying to put flag, then put flag (F char)
-		// b. if not trying to put flag, then read Minefield object
-		// c. If square is a bomb, then explode and let them know they lost, display
-		// revealed array
-		// d. If square is not a bomb, reveal the square.
-		// e. If revealed square is blank, then reveal all of the adjacent numbered or
-		// blank squares
-		// 5. Start over
+	//	if (checkMinefield(minefield).equals("win")) {
+		//	System.out.println("YOU WIN!");
+			//displayMinefield();
+		//} 
+//	else {
+			displayMinefield();
+			int actionChoice = Validator.getInt(scnr,
+					"Pick your action (enter number):\n1. Uncover Square\n2. Flag/Unflag Square\n", 1, 2);
+			switch (actionChoice) {
+			case 1:
+				uncoverSquare(minefield);
+				break;
+			case 2:
+				flagSquare(minefield);
+				break;
+			}
+		//}
+	}
 
-		int actionChoice = Validator.getInt(scnr,
-				"Pick your action (enter number):\n1. Uncover Square\n2. Flag Square\n", 1, 2);
-		switch (actionChoice) {
-		case 1:
-			int xAxis = Validator.getInt(scnr, "Enter the x coordinate:", 1, minefield.getHeight());
-			int yAxis = Validator.getInt(scnr, "Enter the y coordinate:", 1, minefield.getWidth());
-			MineText.userSelects(minefield.getMinefield(), xAxis, yAxis);
-			break;
-		case 2:
-			break;
+	public static void uncoverSquare(Minefield minefield) {
+		int xAxis = Validator.getInt(scnr, "Enter the x coordinate:", 1, minefield.getHeight());
+		int yAxis = Validator.getInt(scnr, "Enter the y coordinate:", 1, minefield.getWidth());
+		String selection = MineText.userSelects(minefield.getMinefield(), xAxis, yAxis);
+		while (!selection.equals("□") || !selection.equals("F")) {
+			System.out.println("Invalid selection. Try again:");
+			xAxis = Validator.getInt(scnr, "Enter the x coordinate:", 1, minefield.getHeight());
+			yAxis = Validator.getInt(scnr, "Enter the y coordinate:", 1, minefield.getWidth());
+			selection = MineText.userSelects(minefield.getMinefield(), xAxis, yAxis);
+		}
+		if (!minefield.getMinefield()[xAxis][yAxis].equals("*")) {
+			//MineText.uncoverSquare(xAxis, yAxis); // Need to make sure this method uncovers all blanks
+			playMinefield(minefield);
+		} else {
+			System.out.println("BOOM! YOU LOSE :(");
+			displayMinefield(); // Need to make some method that prints the actual minefield array to the
+								// Minefield_Display.txt file
 		}
 	}
+
+	public static void flagSquare(Minefield minefield) {
+		int xAxis = Validator.getInt(scnr, "Enter the x coordinate:", 1, minefield.getHeight());
+		int yAxis = Validator.getInt(scnr, "Enter the y coordinate:", 1, minefield.getWidth());
+		String selection = MineText.userSelects(minefield.getMinefield(), xAxis, yAxis);
+		while (!selection.equals("□") || !selection.equals("F")) {
+			System.out.println("Invalid selection. Try again:");
+			xAxis = Validator.getInt(scnr, "Enter the x coordinate:", 1, minefield.getHeight());
+			yAxis = Validator.getInt(scnr, "Enter the y coordinate:", 1, minefield.getWidth());
+			selection = MineText.userSelects(minefield.getMinefield(), xAxis, yAxis);
+		}
+		if (selection.equals("□")) {
+			//MineText.flagSquare(); // Maybe flagSquare and unflagSquare methods can be combined
+			playMinefield(minefield);
+		} else if (selection.equals("F")) {
+			//MineText.unflagSquare();
+			playMinefield(minefield);
+		}
+	}
+
+	//public static String checkMinefield(Minefield minefield) {
+//This needs to somehow read the .txt file, determine if the remaining □ chars are covering only bombs (by checking against array), and if not
+	//}
 
 }
