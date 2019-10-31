@@ -107,7 +107,7 @@ public class MainApp {
 		return minefield;
 	}
 
-	public static void playMinefield(String[][] minefield) {
+	public static void playMinefield(Minefield minefield) {
 		// 1. Ask uncover square or place flag
 		// 2. Read text file
 		// 3. If they enter a field that's already revealed, then let them know it was
@@ -127,9 +127,9 @@ public class MainApp {
 				"Pick your action (enter number):\n1. Uncover Square\n2. Flag Square\n", 1, 2);
 		switch (actionChoice) {
 		case 1:
-			// if (!MineText.readSquareFromFile().equals"(□") {
-
-			// }
+			int xAxis = Validator.getInt(scnr, "Enter the x coordinate:", 1, minefield.getHeight());
+			int yAxis = Validator.getInt(scnr, "Enter the y coordinate:", 1, minefield.getWidth());
+			MineText.userSelects(minefield.getMinefield(), xAxis, yAxis);
 			break;
 		case 2:
 			break;
