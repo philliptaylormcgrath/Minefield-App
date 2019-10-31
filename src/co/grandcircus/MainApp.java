@@ -13,11 +13,11 @@ public class MainApp {
 		MineText.createMineDir();
 		MineText.createFile();
 		String cont = "yes";
-
 		System.out.println("*** WELCOME TO MINEFIELD ***");
 		while (cont.equalsIgnoreCase("yes")) {
 			System.out.println();
 			minefield = generateMinefield();
+			MineText.writeToFile(minefield);
 			playMinefield(minefield);
 			System.out.println("Do you want to play again? (yes/no)");
 			cont = scnr.nextLine();
@@ -77,25 +77,24 @@ public class MainApp {
 	}
 
 	public static void playMinefield(Minefield minefield) {
-	//	if (checkMinefield(minefield).equals("win")) {
-		//	System.out.println("YOU WIN!");
-			//displayMinefield();
-		//} 
-//	else {
+		if (checkMinefield(minefield).equals("win")) {
+			System.out.println("YOU WIN!");
+			displayMinefield();
+		} else {
 			displayMinefield();
 			int actionChoice = Validator.getInt(scnr,
 					"Pick your action (enter number):\n1. Uncover Square\n2. Flag/Unflag Square\n", 1, 2);
 			switch (actionChoice) {
 			case 1:
-				uncoverSquare(minefield);
+				//uncoverSquare(minefield);
 				break;
 			case 2:
-				flagSquare(minefield);
+				//flagSquare(minefield);
 				break;
 			}
-		//}
+		}
 	}
-
+/*
 	public static void uncoverSquare(Minefield minefield) {
 		int xAxis = Validator.getInt(scnr, "Enter the x coordinate:", 1, minefield.getHeight());
 		int yAxis = Validator.getInt(scnr, "Enter the y coordinate:", 1, minefield.getWidth());
@@ -107,7 +106,8 @@ public class MainApp {
 			selection = MineText.userSelects(minefield.getMinefield(), xAxis, yAxis);
 		}
 		if (!minefield.getMinefield()[xAxis][yAxis].equals("*")) {
-			//MineText.uncoverSquare(xAxis, yAxis); // Need to make sure this method uncovers all blanks
+			// MineText.uncoverSquare(xAxis, yAxis); // Need to make sure this method
+			// uncovers all blanks
 			playMinefield(minefield);
 		} else {
 			System.out.println("BOOM! YOU LOSE :(");
@@ -124,19 +124,30 @@ public class MainApp {
 			System.out.println("Invalid selection. Try again:");
 			xAxis = Validator.getInt(scnr, "Enter the x coordinate:", 1, minefield.getHeight());
 			yAxis = Validator.getInt(scnr, "Enter the y coordinate:", 1, minefield.getWidth());
-			selection = MineText.userSelects(minefield.getMinefield(), xAxis, yAxis);
+			//selection = MineText.userSelects(minefield.getMinefield(), xAxis, yAxis);
 		}
 		if (selection.equals("□")) {
-			//MineText.flagSquare(); // Maybe flagSquare and unflagSquare methods can be combined
+			// MineText.flagSquare(); // Maybe flagSquare and unflagSquare methods can be
+			// combined
 			playMinefield(minefield);
 		} else if (selection.equals("F")) {
-			//MineText.unflagSquare();
+			// MineText.unflagSquare();
 			playMinefield(minefield);
 		}
 	}
-
-	//public static String checkMinefield(Minefield minefield) {
-//This needs to somehow read the .txt file, determine if the remaining □ chars are covering only bombs (by checking against array), and if not
-	//}
+*/
+	public static String checkMinefield(Minefield minefield) {
+		ArrayList<String> minefieldArr = MineText.readEntireFile();
+		int j = 0;
+		for (String s : minefieldArr) {
+			for (int i = 0; i < s.length(); i++) {
+				if (!minefield.getMinefield()[j][i].equals("*") && Character.toString(s.charAt(i)).equals("□")) {
+					return "";
+				}
+			}
+			j++;
+		}
+		return "win";
+	}
 
 }
