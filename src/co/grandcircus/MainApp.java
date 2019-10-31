@@ -1,5 +1,6 @@
 package co.grandcircus;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class MainApp {
@@ -8,8 +9,8 @@ public class MainApp {
 
 	public static void main(String[] args) {
 
-		char[][] minefield = { { '*', '3', '*' }, { '*', '4', '2' }, { '1', '2', '*' } };
-		displayMinefield(minefield);
+		char[][] minefield;
+		//displayMinefield(minefield);
 
 		String cont = "yes";
 		String result = "";
@@ -17,15 +18,21 @@ public class MainApp {
 		System.out.println("*** WELCOME TO MINEFIELD ***");
 		while (cont.equalsIgnoreCase("yes")) {
 			System.out.println();
-			int difficulty = Validator.getInt(scnr, "Pick your minefield:\n1. Easy\n 2.\n Medium\n3. Hard\n4. Custom",
+			int difficulty = Validator.getInt(scnr, "Pick your minefield:\n1. Easy\n2. Medium\n3. Hard\n4. Custom",
 					1, 4);
 			switch (difficulty) {
 			case 1:
 			case 2:
 			case 3:
-				generateMinefield(difficulty);
+				minefield = generateMinefield(difficulty).getMinefield();
+				for (char[] c: minefield) {
+					System.out.println(Arrays.toString(c));
+				}
+				//System.out.println(Arrays.toString((Arrays.toString(minefield));
+				break;
 			case 4:
 				generateCustomMinefield();
+				break;
 			}
 			while (result.equals("")) {
 
@@ -47,8 +54,8 @@ public class MainApp {
 		}
 	}
 
-	public static char[][] generateMinefield(int difficulty) {
-		Minefield minefield;
+	public static Minefield generateMinefield(int difficulty) {
+		Minefield minefield = null;
 		switch (difficulty) {
 		case 1:
 			minefield = new Minefield(9, 9, 10);
@@ -63,7 +70,7 @@ public class MainApp {
 		return minefield;
 	}
 
-	public static char[][] generateCustomMinefield() {
+	public static Minefield generateCustomMinefield() {
 		int width = Validator.getInt(scnr, "Enter minefield width:\n", 3, 99);
 		int height = Validator.getInt(scnr, "Enter minefield height:\n", 3, 99);
 		int numBombs = Validator.getInt(scnr, "Enter number of bombs:\n", 1, height * width - 1);
