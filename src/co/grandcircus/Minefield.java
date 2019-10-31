@@ -1,7 +1,7 @@
 package co.grandcircus;
 
-import java.util.Random;
 import java.util.Arrays;
+import java.util.Random;
 
 public class Minefield {
 	public static Random rand = new Random();
@@ -9,7 +9,7 @@ public class Minefield {
 	private int width;
 	private int height;
 	private int numBombs;
-	private char[][] minefield;
+	private String[][] minefield;
 
 	public Minefield() {
 	}
@@ -21,49 +21,75 @@ public class Minefield {
 		this.numBombs = numBombs;
 		int mineCount = 0;
 		int mine;
-		this.minefield = new char[width][height];
-		for (int i = 0; i < minefield.length; i++) {
-			for (int j = 0; j < minefield[i].length; j++) {
-				mine = rand.nextInt(2);;
-				if (mineCount != numBombs) {
-					if (mine == 0) {
-						minefield[i][j] = '*';
-						mineCount++;
-					} else {
-						minefield[i][j] = '0';
-					}
-				}
+		minefield = new String[this.width][this.height];
+		for (int h = 0; h < minefield.length; h++) {
+			for (int k = 0; k < minefield[h].length; k++) {
+				minefield[h][k] = "0";
 			}
 		}
+
+		while (mineCount < numBombs) {
+			int i = rand.nextInt(width);
+			int j = rand.nextInt(height);
+			if (!minefield[i][j].equals("*")) {
+				minefield[i][j] = "*";
+				mineCount++;
+			}
+
+		}
+
 		for (int i = 0; i < minefield.length; i++) {
 			for (int j = 0; j < minefield[i].length; j++) {
-				if (minefield[i][j] == '*') {
+				if (minefield[i][j].equals("*")) {
 					try {
-					if (minefield[i + 1][j] != '*') {
-						minefield[i + 1][j] = (char) (Character.getNumericValue(minefield[i + 1][j]) + 1);
+						if (!minefield[i + 1][j].equals("*")) {
+							minefield[i + 1][j] = String.valueOf((Integer.parseInt(minefield[i + 1][j]) + 1));
+						}
+					} catch (IndexOutOfBoundsException e) {
 					}
-					if (minefield[i - 1][j] != '*') {
-						minefield[i - 1][j] = (char) (Character.getNumericValue(minefield[i - 1][j]) + 1);
+					try {
+						if (!minefield[i - 1][j].equals("*")) {
+							minefield[i - 1][j] = String.valueOf((Integer.parseInt(minefield[i - 1][j]) + 1));
+						}
+					} catch (IndexOutOfBoundsException e) {
 					}
-					if (minefield[i][j + 1] != '*') {
-						minefield[i][j + 1] = (char) (Character.getNumericValue(minefield[i][j + 1]) + 1);
+					try {
+						if (!minefield[i][j + 1].equals("*")) {
+							minefield[i][j + 1] = String.valueOf((Integer.parseInt(minefield[i][j + 1]) + 1));
+						}
+					} catch (IndexOutOfBoundsException e) {
 					}
-					if (minefield[i][j - 1] != '*') {
-						minefield[i][j - 1] = (char) (Character.getNumericValue(minefield[i][j - 1]) + 1);
+					try {
+						if (!minefield[i][j - 1].equals("*")) {
+							minefield[i][j - 1] = String.valueOf((Integer.parseInt(minefield[i][j - 1]) + 1));
+						}
+					} catch (IndexOutOfBoundsException e) {
 					}
-					if (minefield[i + 1][j + 1] != '*') {
-						minefield[i + 1][j + 1] = (char) (Character.getNumericValue(minefield[i + 1][j + 1]) + 1);
+					try {
+						if (!minefield[i + 1][j + 1].equals("*")) {
+							minefield[i + 1][j + 1] = String.valueOf((Integer.parseInt(minefield[i + 1][j + 1]) + 1));
+						}
+					} catch (IndexOutOfBoundsException e) {
 					}
-					if (minefield[i + 1][j - 1] != '*') {
-						minefield[i + 1][j - 1] = (char) (Character.getNumericValue(minefield[i + 1][j - 1]) + 1);
+					try {
+						if (!minefield[i + 1][j - 1].equals("*")) {
+							minefield[i + 1][j - 1] = String.valueOf((Integer.parseInt(minefield[i + 1][j - 1]) + 1));
+						}
+					} catch (IndexOutOfBoundsException e) {
 					}
-					if (minefield[i - 1][j + 1] != '*') {
-						minefield[i - 1][j + 1] = (char) (Character.getNumericValue(minefield[i - 1][j + 1]) + 1);
+					try {
+						if (!minefield[i - 1][j + 1].equals("*")) {
+							minefield[i - 1][j + 1] = String.valueOf((Integer.parseInt(minefield[i - 1][j + 1]) + 1));
+						}
+					} catch (IndexOutOfBoundsException e) {
 					}
-					if (minefield[i - 1][j - 1] != '*') {
-						minefield[i - 1][j - 1] = (char) (Character.getNumericValue(minefield[i - 1][j - 1]) + 1);
-					} } catch (IndexOutOfBoundsException e) {
+					try {
+						if (!minefield[i - 1][j - 1].equals("*")) {
+							minefield[i - 1][j - 1] = String.valueOf((Integer.parseInt(minefield[i - 1][j - 1]) + 1));
+						}
+					} catch (IndexOutOfBoundsException e) {
 					}
+
 				}
 			}
 		}
@@ -92,8 +118,8 @@ public class Minefield {
 	public void setNumBombs(int numBombs) {
 		this.numBombs = numBombs;
 	}
-	
-	public char[][] getMinefield() {
+
+	public String[][] getMinefield() {
 		return minefield;
 	}
 
@@ -101,7 +127,5 @@ public class Minefield {
 	public String toString() {
 		return Arrays.toString(minefield);
 	}
-	
-	
 
 }

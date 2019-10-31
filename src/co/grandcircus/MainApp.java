@@ -9,7 +9,7 @@ public class MainApp {
 
 	public static void main(String[] args) {
 
-		char[][] minefield;
+		String[][] minefield;
 		//displayMinefield(minefield);
 
 		String cont = "yes";
@@ -25,13 +25,16 @@ public class MainApp {
 			case 2:
 			case 3:
 				minefield = generateMinefield(difficulty).getMinefield();
-				for (char[] c: minefield) {
-					System.out.println(Arrays.toString(c));
+				for (String[] s: minefield) {
+					System.out.println(Arrays.toString(s));
 				}
 				//System.out.println(Arrays.toString((Arrays.toString(minefield));
 				break;
 			case 4:
-				generateCustomMinefield();
+				minefield = generateCustomMinefield().getMinefield();
+				for (String[] s: minefield) {
+					System.out.println(Arrays.toString(s));
+				}
 				break;
 			}
 			while (result.equals("")) {
@@ -45,7 +48,7 @@ public class MainApp {
 		scnr.close();
 	}
 
-	public static void displayMinefield(char[][] minefield) {
+	public static void displayMinefield(String[][] minefield) {
 		for (int i = 0; i < minefield.length; i++) {
 			for (int j = 0; j < minefield[i].length; j++) {
 				System.out.print(minefield[i][j]);
@@ -78,7 +81,7 @@ public class MainApp {
 		return minefield;
 	}
 
-	public static void playMinefield(char[][] minefield) {
+	public static void playMinefield(String[][] minefield) {
 		// 1. Ask uncover square or place flag
 		// 2. Read text file
 		// 3. If they enter a field that's already revealed, then let them know it was
