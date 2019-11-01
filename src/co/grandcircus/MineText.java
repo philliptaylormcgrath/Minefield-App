@@ -237,7 +237,6 @@ public class MineText {
 								try {
 									if (!minefieldArr[xAxis - 1][yAxis].equals("*")) {
 										MineText.writeInput(minefield, xAxis - 1, yAxis);
-										// reveal spot;
 									}
 								} catch (IndexOutOfBoundsException e) {
 								}
