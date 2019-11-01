@@ -42,7 +42,6 @@ public class MineText {
 		String fileName = "Minefield_Display.txt";
 		Path path = Paths.get("Minefield_Folder", fileName);
 		File file = path.toFile();
-
 		BufferedReader br;
 		try {
 			br = new BufferedReader(new FileReader(file));
@@ -61,7 +60,13 @@ public class MineText {
 		return fileReadout;
 
 	}
-
+	
+	
+	/*
+	public static String userSelects(String[][] minefield, int xAxis, int yAxis) {
+		String indexConts = minefield[xAxis - 1][yAxis - 1];
+	}
+*/
 	public static void writeToFile(Minefield minefield) {
 		String[][] minefieldArr = minefield.getMinefield();
 		String fileName = "Minefield_Display.txt";
@@ -117,7 +122,6 @@ public class MineText {
 	public static void createFile() {
 		String fileName = "Minefield_Display.txt";
 		Path path = Paths.get("Minefield_Folder", fileName);
-
 		if (Files.notExists(path)) {
 			try {
 				Files.createFile(path);
@@ -128,7 +132,6 @@ public class MineText {
 		} else {
 			System.out.println("The file already exists");
 		}
-
 	}
 
 	public static void createMineDir() {

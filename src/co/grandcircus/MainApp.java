@@ -55,7 +55,7 @@ public class MainApp {
 
 	public static Minefield generateMinefield() {
 		Minefield minefield = null;
-		int difficulty = Validator.getInt(scnr, "Pick your minefield:\n1. Easy\n2. Medium\n3. Hard\n4. Custom", 1, 4);
+		int difficulty = Validator.getInt(scnr, "Pick your minefield:\n1. Easy\n2. Medium\n3. Hard\n4. Custom\n", 1, 4);
 		switch (difficulty) {
 		case 1:
 			minefield = new Minefield(9, 9, 10);
