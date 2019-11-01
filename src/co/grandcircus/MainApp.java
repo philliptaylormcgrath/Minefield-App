@@ -99,7 +99,7 @@ public class MainApp {
 		int xAxis = Validator.getInt(scnr, "Enter the x coordinate:", 1, minefield.getHeight());
 		int yAxis = Validator.getInt(scnr, "Enter the y coordinate:", 1, minefield.getWidth());
 		String selection = MineText.userSelects(minefield.getMinefield(), xAxis, yAxis);
-		while (!selection.equals("□") || !selection.equals("F")) {
+		while (!selection.equals("@") || !selection.equals("F")) {
 			System.out.println("Invalid selection. Try again:");
 			xAxis = Validator.getInt(scnr, "Enter the x coordinate:", 1, minefield.getHeight());
 			yAxis = Validator.getInt(scnr, "Enter the y coordinate:", 1, minefield.getWidth());
@@ -120,13 +120,13 @@ public class MainApp {
 		int xAxis = Validator.getInt(scnr, "Enter the x coordinate:", 1, minefield.getHeight());
 		int yAxis = Validator.getInt(scnr, "Enter the y coordinate:", 1, minefield.getWidth());
 		String selection = MineText.userSelects(minefield.getMinefield(), xAxis, yAxis);
-		while (!selection.equals("□") || !selection.equals("F")) {
+		while (!selection.equals("@") || !selection.equals("F")) {
 			System.out.println("Invalid selection. Try again:");
 			xAxis = Validator.getInt(scnr, "Enter the x coordinate:", 1, minefield.getHeight());
 			yAxis = Validator.getInt(scnr, "Enter the y coordinate:", 1, minefield.getWidth());
 			//selection = MineText.userSelects(minefield.getMinefield(), xAxis, yAxis);
 		}
-		if (selection.equals("□")) {
+		if (selection.equals("@")) {
 			// MineText.flagSquare(); // Maybe flagSquare and unflagSquare methods can be
 			// combined
 			playMinefield(minefield);
@@ -141,7 +141,7 @@ public class MainApp {
 		int j = 0;
 		for (String s : minefieldArr) {
 			for (int i = 0; i < s.length(); i++) {
-				if (!minefield.getMinefield()[j][i].equals("*") && Character.toString(s.charAt(i)).equals("□")) {
+				if (!minefield.getMinefield()[j][i].equals("*") && Character.toString(s.charAt(i)).equals("@")) {
 					return "";
 				}
 			}
