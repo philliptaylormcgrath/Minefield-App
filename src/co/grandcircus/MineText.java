@@ -159,4 +159,39 @@ public class MineText {
 																// creation
 		}
 	}
+	public static String findInputTxt (int xAxis, int yAxis) {
+		String fileName = "Minefield_Display.txt";
+		Path path = Paths.get("Minefield_Folder", fileName);
+		File file = path.toFile();
+		int txtChar = 0;
+		String readString = "0";
+		BufferedReader br;
+		try {
+			br = new BufferedReader(new FileReader(file));
+			
+			
+				for (int i = 0; i < (yAxis-1); i++) {
+					br.readLine();
+					
+				}
+				
+				br.skip(xAxis-1);
+				
+				
+				
+				txtChar = br.read();
+				readString = Character.toString((char)txtChar);
+				System.out.println(readString);
+				
+				
+				br.close();
+		} catch (FileNotFoundException e) {
+			System.out.println("404 File not found");
+		} catch (IOException e) {
+			System.out.println("IOException, something's fucked. File was not read");
+		}
+		
+		return readString;
+
+	}
 }
