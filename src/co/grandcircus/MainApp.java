@@ -93,7 +93,8 @@ public class MainApp {
 				playMinefield(minefield);
 				break;
 			case 2:
-				//flagSquare(minefield);
+				flagSquare(minefield);
+				playMinefield(minefield);
 				break;
 			}
 		}
@@ -102,16 +103,18 @@ public class MainApp {
 	public static void uncoverSquare(Minefield minefield) {
 		int xAxis = Validator.getInt(scnr, "Enter the x coordinate:", 1, minefield.getHeight());
 		int yAxis = Validator.getInt(scnr, "Enter the y coordinate:", 1, minefield.getWidth());
-		String selection = MineText.writeInput(minefield, xAxis, yAxis);
-		while (!selection.equals("@") || !selection.equals("F")) {
+		String selection = MineText.readInputTxt(xAxis, yAxis);
+		if (selection.equals("@")) {
+			System.out.println("It's a @");
+		}
+		while (!selection.equals("@") && !selection.equals("F")) {
 			System.out.println("Invalid selection. Try again:");
 			xAxis = Validator.getInt(scnr, "Enter the x coordinate:", 1, minefield.getHeight());
 			yAxis = Validator.getInt(scnr, "Enter the y coordinate:", 1, minefield.getWidth());
-			selection = MineText.writeInput(minefield, xAxis, yAxis);
+			selection = MineText.readInputTxt(xAxis, yAxis);
 		}
-		if (!minefield.getMinefield()[xAxis][yAxis].equals("*")) {
-			// MineText.uncoverSquare(xAxis, yAxis); // Need to make sure this method
-			// uncovers all blanks
+		if (!minefield.getMinefield()[yAxis-1][xAxis-1].equals("*")) {
+			MineText.writeInput(minefield,xAxis, yAxis);
 			playMinefield(minefield);
 		} else {
 			System.out.println("BOOM! YOU LOSE :(");
@@ -123,16 +126,15 @@ public class MainApp {
 	public static void flagSquare(Minefield minefield) {
 		int xAxis = Validator.getInt(scnr, "Enter the x coordinate:", 1, minefield.getHeight());
 		int yAxis = Validator.getInt(scnr, "Enter the y coordinate:", 1, minefield.getWidth());
-		String selection = MineText.writeInput(minefield, xAxis, yAxis);
-		while (!selection.equals("@") || !selection.equals("F")) {
+		String selection = MineText.readInputTxt(xAxis, yAxis);
+		while (!selection.equals("@") && !selection.equals("F")) {
 			System.out.println("Invalid selection. Try again:");
 			xAxis = Validator.getInt(scnr, "Enter the x coordinate:", 1, minefield.getHeight());
 			yAxis = Validator.getInt(scnr, "Enter the y coordinate:", 1, minefield.getWidth());
-			//selection = MineText.userSelects(minefield.getMinefield(), xAxis, yAxis);
+			selection = MineText.readInputTxt(xAxis, yAxis);
 		}
 		if (selection.equals("@")) {
-			// MineText.flagSquare(); // Maybe flagSquare and unflagSquare methods can be
-			// combined
+			MineText.writeFlag(minefield, xAxis, yAxis);
 			playMinefield(minefield);
 		} else if (selection.equals("F")) {
 			// MineText.unflagSquare();

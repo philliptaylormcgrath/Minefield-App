@@ -20,7 +20,7 @@ public class TESTMainAppTEST {
 			
 			MineText.writeToFile(minefield);
 			
-			playMinefield(minefield);
+			//playMinefield(minefield);
 			
 			System.out.println("Do you want to play again? (yes/no)");
 			cont = scnr.nextLine();
@@ -78,7 +78,7 @@ public class TESTMainAppTEST {
 		}
 		return minefield;
 	}
-
+/*
 	public static void playMinefield(Minefield minefield) {
 		if (checkMinefield(minefield).equals("win")) {
 			System.out.println("YOU WIN!");
@@ -97,8 +97,8 @@ public class TESTMainAppTEST {
 				break;
 			}
 		}
-	}
-
+	}*/
+/*
 	public static void uncoverSquare(Minefield minefield) {
 		int xAxis = Validator.getInt(scnr, "Enter the x coordinate:", 1, minefield.getHeight());
 		int yAxis = Validator.getInt(scnr, "Enter the y coordinate:", 1, minefield.getWidth());
@@ -118,8 +118,8 @@ public class TESTMainAppTEST {
 			displayMinefield(); // Need to make some method that prints the actual minefield array to the
 								// Minefield_Display.txt file
 		}
-	}
-
+	} */
+/*
 	public static void flagSquare(Minefield minefield) {
 		int xAxis = Validator.getInt(scnr, "Enter the x coordinate:", 1, minefield.getHeight());
 		int yAxis = Validator.getInt(scnr, "Enter the y coordinate:", 1, minefield.getWidth());
@@ -153,5 +153,5 @@ public class TESTMainAppTEST {
 		}
 		return "win";
 	}
-
+*/
 }
