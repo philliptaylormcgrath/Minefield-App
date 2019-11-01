@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
-public class MainApp {
+public class TESTMainAppTEST {
 
 	public static Scanner scnr = new Scanner(System.in);
 

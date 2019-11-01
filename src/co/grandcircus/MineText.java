@@ -16,7 +16,7 @@ import java.util.ArrayList;
 public class MineText {
 	public static void readFromFile() {
 		String fileName = "Minefield_Display.txt";
-		Path path = Paths.get("Minefield_Folder", fileName);
+		Path path = Paths.get("src", "co", "grandcircus", fileName);
 		File file = path.toFile();
 
 		BufferedReader br;
@@ -40,7 +40,7 @@ public class MineText {
 	public static ArrayList<String> readEntireFile() {
 		ArrayList<String> fileReadout = new ArrayList<>();
 		String fileName = "Minefield_Display.txt";
-		Path path = Paths.get("Minefield_Folder", fileName);
+		Path path = Paths.get("src", "co", "grandcircus", fileName);
 		File file = path.toFile();
 		BufferedReader br;
 		try {
@@ -70,7 +70,7 @@ public class MineText {
 	public static void writeToFile(Minefield minefield) {
 		String[][] minefieldArr = minefield.getMinefield();
 		String fileName = "Minefield_Display.txt";
-		Path path = Paths.get("Minefield_Folder", fileName);
+		Path path = Paths.get("src", "co", "grandcircus", fileName);
 		String test = "test";
 		File file = path.toFile();
 		PrintWriter output; // These two lines could be one line declaring and initializing. Putting it
@@ -83,10 +83,10 @@ public class MineText {
 			for (int i = 0; i < minefield.getWidth(); i++) {
 				for (int j = 0; j < minefield.getHeight(); j++) {
 					if (j == minefield.getHeight() -1) {
-						output.println("□");
+						output.println("@");
 					}
 					else {
-						output.print("□");
+						output.print("@");
 					}
 					/*if (i == 0 && j == 0) {
 						output.print(" ");
@@ -121,7 +121,7 @@ public class MineText {
 
 	public static void createFile() {
 		String fileName = "Minefield_Display.txt";
-		Path path = Paths.get("Minefield_Folder", fileName);
+		Path path = Paths.get("src", "co", "grandcircus", fileName);
 		if (Files.notExists(path)) {
 			try {
 				Files.createFile(path);
@@ -133,7 +133,7 @@ public class MineText {
 			System.out.println("The file already exists");
 		}
 	}
-
+/*
 	public static void createMineDir() {
 		// Create a string representing the name of the folder we want to create, or
 		// verify that it already exists
@@ -158,10 +158,11 @@ public class MineText {
 			System.out.println("The folder already exists"); // Can now comment any of the above out, after folder
 																// creation
 		}
-	}
-	public static String findInputTxt (int xAxis, int yAxis) {
+	}*/
+	public static String readInputTxt (int xAxis, int yAxis) {
+		//This method will find the character in the TXT document that corresponds with the user's input coordinates
 		String fileName = "Minefield_Display.txt";
-		Path path = Paths.get("Minefield_Folder", fileName);
+		Path path = Paths.get("src", "co","grandcircus", fileName);
 		File file = path.toFile();
 		int txtChar = 0;
 		String readString = "0";
@@ -193,5 +194,90 @@ public class MineText {
 		
 		return readString;
 
+	}
+	public static void createTempFile(String tempName) {
+		String tempFileName = tempName;
+		Path path = Paths.get("src", "co", "grandcircus", tempFileName);
+		if (Files.notExists(path)) {
+			try {
+				Files.createFile(path);
+				System.out.println("File successfully created");
+			} catch (IOException e) {
+				System.out.println("Problem creating file. File not created");
+			}
+		} else {
+			System.out.println("The file already exists");
+		}
+	}
+	
+	//Create method to take user coordinates, find that element in the array, then write that element into the txt file. 
+	//If it's a space, it will look for spaces and numbers to display. Loop for spaces. If it's a number, just reveal.
+	public static String writeInput(Minefield minefield, int xAxis, int yAxis) {
+		
+		String[][] minefieldArr = minefield.getMinefield();
+		String arraySpot = minefieldArr[yAxis][xAxis];
+		String fileName = "Minefield_Display.txt";
+		Path path = Paths.get("src", "co", "grandcircus", fileName);
+		//String test = "test";
+		 Path readFilePath = Paths.get("src", "co", "grandcircus", fileName);
+	        File readFile = readFilePath.toFile();
+	        String tempFileName = "temp.txt";
+	        createTempFile(tempFileName);
+	        Path tempFilePath = Paths.get("src", "co", "grandcircus", tempFileName);
+	        File tempFile = tempFilePath.toFile();
+	        PrintWriter output = null;
+	        BufferedReader br = null;
+		//File file = path.toFile();
+		
+		// This method will take the input from the reader (A,3 for instance) and then
+		// scan the array and determine whether or not to reveal things.
+		try {
+			output = new PrintWriter(new FileOutputStream(tempFile));
+			br = new BufferedReader(new FileReader(readFile));
+			
+			int nextSpot = br.read();
+			String printSpot = null;
+			String line = br.readLine();
+			while (line != null) {
+				for (int i = 0; i < (yAxis-1); i++) {
+					
+				}	
+				for (int i = 0; i < (xAxis-1); i++) {
+					printSpot = Character.toString((char)nextSpot);
+					output.print(printSpot);//Want to print characters one at a time here
+				}
+				for (int i = xAxis; i < minefield.getMinefield()[yAxis-1].length; i++) {
+					nextSpot = br.read();
+					printSpot = Character.toString((char)nextSpot);
+					output.print(printSpot);//Want to print characters one at a time here
+				}
+				for (int i = yAxis; i< minefield.getMinefield().length; i++) {
+					output.println(line);
+				}
+			}
+			
+			
+			
+			output.print(arraySpot);
+			
+			
+			
+            readFile.delete();
+            tempFile.renameTo(readFile);
+            System.out.println("Testing. ArraySpot is internally showing as: " + arraySpot + "Printed character is internally showing as: " + printSpot);
+				
+				output.print("\b");
+			
+			output.close();
+		} catch (FileNotFoundException e) {
+			System.out.println("404 File not found");
+		} catch (IOException e) {
+			System.out.println("Problem creating file. File not created");
+		}
+		
+		finally {
+			output.close();
+		}
+return arraySpot;
 	}
 }
