@@ -91,8 +91,8 @@ public class MineText {
 					 * if (j == minefield.getHeight()) { output.println("x" + j); } else {
 					 * output.print("x" + j); } } else if (i != 0 && j == 0) {
 					 * 
-					 * output.print("y" + i); } else if (i != 0 & j != 0) { output.print("□"); if (j
-					 * == minefield.getHeight()) { output.println("□"); } }
+					 * output.print("y" + i); } else if (i != 0 & j != 0) { output.print("□"); if
+					 * (j == minefield.getHeight()) { output.println("□"); } }
 					 */
 					// output.print("□");
 				}
@@ -226,29 +226,91 @@ public class MineText {
 					if (i == (xAxis - 1)) {
 						if (i == (minefield.getWidth() - 1)) {
 							output.println(arraySpot);
-							line = br.readLine();
+							if (arraySpot.equals("0")) {
+								try {
+									if (!minefieldArr[xAxis + 1][yAxis].equals("*")) {
+										MineText.writeInput(minefield, xAxis + 1, yAxis);
+										// reveal spot;
+									}
+								} catch (IndexOutOfBoundsException e) {
+								}
+								try {
+									if (!minefieldArr[xAxis - 1][yAxis].equals("*")) {
+										MineText.writeInput(minefield, xAxis - 1, yAxis);
+										// reveal spot;
+									}
+								} catch (IndexOutOfBoundsException e) {
+								}
+								try {
+									if (!minefieldArr[xAxis][yAxis + 1].equals("*")) {
+										MineText.writeInput(minefield, xAxis, yAxis + 1);
+
+									}
+								} catch (IndexOutOfBoundsException e) {
+								}
+
+								try {
+									if (!minefieldArr[xAxis][yAxis - 1].equals("*")) {
+										MineText.writeInput(minefield, xAxis, yAxis - 1);
+
+									}
+								} catch (IndexOutOfBoundsException e) {
+								}
+								try {
+									if (!minefieldArr[xAxis + 1][yAxis + 1].equals("*")) {
+										MineText.writeInput(minefield, xAxis + 1, yAxis + 1);
+
+									}
+								} catch (IndexOutOfBoundsException e) {
+								}
+								try {
+									if (!minefieldArr[xAxis - 1][yAxis - 1].equals("*")) {
+										MineText.writeInput(minefield, xAxis - 1, yAxis - 1);
+
+									}
+								} catch (IndexOutOfBoundsException e) {
+								}
+
+								try {
+									if (!minefieldArr[xAxis + 1][yAxis - 1].equals("*")) {
+										MineText.writeInput(minefield, xAxis + 1, yAxis - 1);
+
+									}
+								} catch (IndexOutOfBoundsException e) {
+								}
+
+								try {
+									if (!minefieldArr[xAxis - 1][yAxis + 1].equals("*")) {
+										MineText.writeInput(minefield, xAxis - 1, yAxis + 1);
+
+									}
+								} catch (IndexOutOfBoundsException e) {
+								}
+
+								line = br.readLine();
+							} else {
+								output.print(arraySpot); // paste here
+							}
 						} else {
-							output.print(arraySpot);
+							if (i == (minefield.getWidth() - 1)) {
+								output.println(line.charAt(i));
+								line = br.readLine();
+							} else {
+								output.print(line.charAt(i));
+							}
 						}
-					} else {
-						if (i == (minefield.getWidth() - 1)) {
-							output.println(line.charAt(i));
+					}
+					if (yAxis != minefield.getHeight()) {
+						for (int i2 = yAxis; i2 < minefield.getMinefield().length; i2++) {
+							output.println(line);
 							line = br.readLine();
-						} else {
-							output.print(line.charAt(i));
 						}
 					}
 				}
-				if (yAxis != minefield.getHeight()) {
-					for (int i = yAxis; i < minefield.getMinefield().length; i++) {
-						output.println(line);
-						line = br.readLine();
-					}
-				}
+				readFile.delete();
+				tempFile.renameTo(readFile);
+				output.close();
 			}
-			readFile.delete();
-			tempFile.renameTo(readFile);
-			output.close();
 		} catch (FileNotFoundException e) {
 			System.out.println("404 File not found");
 		} catch (IOException e) {
@@ -282,14 +344,13 @@ public class MineText {
 				for (int i = 0; i < (yAxis - 1); i++) {
 					output.println(line);
 					line = br.readLine();
-				}
+				} // Logic here}
 				for (int i = 0; i < minefield.getWidth(); i++) {
 					if (i == (xAxis - 1)) {
 						if (i == (minefield.getWidth() - 1)) {
 							if (readInputTxt(xAxis, yAxis).equals("F")) {
 								output.println("@");
-							}
-							else {
+							} else {
 								output.println("F");
 							}
 							line = br.readLine();
@@ -297,8 +358,7 @@ public class MineText {
 							System.out.println(readInputTxt(xAxis, yAxis));
 							if (readInputTxt(xAxis, yAxis).equals("F")) {
 								output.print("@");
-							}
-							else {
+							} else {
 								output.print("F");
 							}
 						}
@@ -331,4 +391,23 @@ public class MineText {
 			output.close();
 		}
 	}
+	/*
+	 * if (arraySpot.equals("0")) { try { if (!minefieldArr[xAxis -
+	 * 1][yAxis].equals("*")) { MineText.writeInput(minefield, xAxis -1, yAxis);
+	 * //reveal spot; } } catch (IndexOutOfBoundsException e) { } try { if
+	 * (!minefield[i - 1][j].equals("*")) { //reveal spot; } } catch
+	 * (IndexOutOfBoundsException e) { } try { if (!minefield[i][j + 1].equals("*"))
+	 * { //reveal spot } } catch (IndexOutOfBoundsException e) { } try { if
+	 * (!minefield[i][j - 1].equals("*")) { //reveal spot } } catch
+	 * (IndexOutOfBoundsException e) { } try { if (!minefield[i + 1][j +
+	 * 1].equals("*")) { //reveal spot } } catch (IndexOutOfBoundsException e) { }
+	 * try { if (!minefield[i + 1][j - 1].equals("*")) { //reveal spot } } catch
+	 * (IndexOutOfBoundsException e) { } try { if (!minefield[i - 1][j +
+	 * 1].equals("*")) { //reveal spot } } catch (IndexOutOfBoundsException e) { }
+	 * try { if (!minefield[i - 1][j - 1].equals("*")) { //reveal spot } } catch
+	 * (IndexOutOfBoundsException e) { }
+	 * 
+	 * }
+	 */
+//}
 }
