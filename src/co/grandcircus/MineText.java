@@ -240,10 +240,11 @@ public class MineText {
 					}
 				}
 				if (yAxis != minefield.getHeight()) {
-				for (int i = yAxis; i < minefield.getMinefield().length; i++) {
-					output.println(line);
-					line = br.readLine();
-				}}
+					for (int i = yAxis; i < minefield.getMinefield().length; i++) {
+						output.println(line);
+						line = br.readLine();
+					}
+				}
 			}
 			readFile.delete();
 			tempFile.renameTo(readFile);
@@ -270,7 +271,6 @@ public class MineText {
 		File tempFile = tempFilePath.toFile();
 		PrintWriter output = null;
 		BufferedReader br = null;
-		// File file = path.toFile();
 
 		// This method will take the input from the reader (A,3 for instance) and then
 		// scan the array and determine whether or not to reveal things.
@@ -281,41 +281,41 @@ public class MineText {
 			while (line != null) {
 				for (int i = 0; i < (yAxis - 1); i++) {
 					output.println(line);
-					if (i != (yAxis - 2)) {
-						line = br.readLine();
-					} else {
-
-					}
+					line = br.readLine();
 				}
 				for (int i = 0; i < minefield.getWidth(); i++) {
 					if (i == (xAxis - 1)) {
 						if (i == (minefield.getWidth() - 1)) {
-							if (Character.toString((char) br.read()).equals("F")) {
-								output.print("@");
-							} else {
-								output.print("F");
+							if (readInputTxt(xAxis, yAxis).equals("F")) {
+								output.println("@");
+							}
+							else {
+								output.println("F");
 							}
 							line = br.readLine();
 						} else {
-							if (Character.toString((char) br.read()).equals("F")) {
+							System.out.println(readInputTxt(xAxis, yAxis));
+							if (readInputTxt(xAxis, yAxis).equals("F")) {
 								output.print("@");
-							} else {
+							}
+							else {
 								output.print("F");
 							}
-							line = Character.toString((char)br.read());
 						}
 					} else {
 						if (i == (minefield.getWidth() - 1)) {
-							output.print(Character.toString((char) br.read()));
+							output.println(line.charAt(i));
 							line = br.readLine();
 						} else {
-							output.print(Character.toString((char) br.read()));
+							output.print(line.charAt(i));
 						}
 					}
 				}
-				for (int i = yAxis; i < minefield.getMinefield().length; i++) {
-					output.println(line);
-					line = br.readLine();
+				if (yAxis != minefield.getHeight()) {
+					for (int i = yAxis; i < minefield.getMinefield().length; i++) {
+						output.println(line);
+						line = br.readLine();
+					}
 				}
 			}
 			readFile.delete();

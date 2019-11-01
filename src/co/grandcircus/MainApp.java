@@ -133,13 +133,13 @@ public class MainApp {
 			yAxis = Validator.getInt(scnr, "Enter the y coordinate:", 1, minefield.getWidth());
 			selection = MineText.readInputTxt(xAxis, yAxis);
 		}
-		if (selection.equals("@")) {
+		//if (selection.equals("@")) {
 			MineText.writeFlag(minefield, xAxis, yAxis);
 			playMinefield(minefield);
-		} else if (selection.equals("F")) {
-			// MineText.unflagSquare();
-			playMinefield(minefield);
-		}
+		//} else if (selection.equals("F")) {
+		//	MineText.writeFlag(minefield, xAxis, yAxis);
+		//	playMinefield(minefield);
+		//}
 	}
 
 	public static String checkMinefield(Minefield minefield) {
