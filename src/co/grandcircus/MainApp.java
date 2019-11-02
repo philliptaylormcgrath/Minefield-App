@@ -17,11 +17,8 @@ public class MainApp {
 		while (cont.equalsIgnoreCase("yes")) {
 			System.out.println();
 			minefield = generateMinefield();
-			
 			MineText.writeToFile(minefield);
-			
 			playMinefield(minefield);
-			
 			System.out.println("Do you want to play again? (yes/no)");
 			cont = scnr.nextLine();
 		}
@@ -90,11 +87,9 @@ public class MainApp {
 			switch (actionChoice) {
 			case 1:
 				uncoverSquare(minefield);
-				playMinefield(minefield);
 				break;
 			case 2:
 				flagSquare(minefield);
-				playMinefield(minefield);
 				break;
 			}
 		}
@@ -103,10 +98,8 @@ public class MainApp {
 	public static void uncoverSquare(Minefield minefield) {
 		int xAxis = Validator.getInt(scnr, "Enter the x coordinate:", 1, minefield.getHeight());
 		int yAxis = Validator.getInt(scnr, "Enter the y coordinate:", 1, minefield.getWidth());
+		int cont = 0;
 		String selection = MineText.readInputTxt(xAxis, yAxis);
-		if (selection.equals("@")) {
-			System.out.println("It's a @");
-		}
 		while (!selection.equals("@") && !selection.equals("F")) {
 			System.out.println("Invalid selection. Try again:");
 			xAxis = Validator.getInt(scnr, "Enter the x coordinate:", 1, minefield.getHeight());
@@ -118,7 +111,7 @@ public class MainApp {
 			playMinefield(minefield);
 		} else {
 			System.out.println("BOOM! YOU LOSE :(");
-			displayMinefield(); // Need to make some method that prints the actual minefield array to the
+		//	displayMinefield(); // Need to make some method that prints the actual minefield array to the
 								// Minefield_Display.txt file
 		}
 	}
@@ -133,13 +126,8 @@ public class MainApp {
 			yAxis = Validator.getInt(scnr, "Enter the y coordinate:", 1, minefield.getWidth());
 			selection = MineText.readInputTxt(xAxis, yAxis);
 		}
-		//if (selection.equals("@")) {
 			MineText.writeFlag(minefield, xAxis, yAxis);
 			playMinefield(minefield);
-		//} else if (selection.equals("F")) {
-		//	MineText.writeFlag(minefield, xAxis, yAxis);
-		//	playMinefield(minefield);
-		//}
 	}
 
 	public static String checkMinefield(Minefield minefield) {
