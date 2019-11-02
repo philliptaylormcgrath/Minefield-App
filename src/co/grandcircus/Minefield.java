@@ -4,8 +4,8 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class Minefield {
-	public static Random rand = new Random();
 
+	// Declare instance variables
 	private int width;
 	private int height;
 	private int numBombs;
@@ -14,20 +14,31 @@ public class Minefield {
 	public Minefield() {
 	}
 
+	// Constructor takes in minefield width, height, and number of mines
 	public Minefield(int width, int height, int numBombs) {
 		super();
 		this.width = width;
 		this.height = height;
 		this.numBombs = numBombs;
+
+		// Declare variables to use while generating randomized minefield
+		Random rand = new Random();
 		int mineCount = 0;
 		int mine;
+
+		// Set minefield to String[][] of width and height provided with constructor
 		minefield = new String[this.width][this.height];
+
+		// Populate every array index in the minefield with a 0
 		for (int h = 0; h < minefield.length; h++) {
 			for (int k = 0; k < minefield[h].length; k++) {
 				minefield[h][k] = "0";
 			}
 		}
 
+		// Randomly sow array indexes with mines (*) until the number of mines provided
+		// with
+		// constructor have been placed
 		while (mineCount < numBombs) {
 			int i = rand.nextInt(width);
 			int j = rand.nextInt(height);
@@ -38,6 +49,9 @@ public class Minefield {
 
 		}
 
+		// For every other array index in the minefield, check every adjacent array
+		// index. If any of the indices contain a mine, increment the number displayed
+		// in the original array index.
 		for (int i = 0; i < minefield.length; i++) {
 			for (int j = 0; j < minefield[i].length; j++) {
 				if (minefield[i][j].equals("*")) {
