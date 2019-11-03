@@ -12,7 +12,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
-// Assigned to Phil currently
+
 public class MineText {
 	public static void readFromFile() {
 		String fileName = "Minefield_Display.txt";
@@ -32,7 +32,7 @@ public class MineText {
 		} catch (FileNotFoundException e) {
 			System.out.println("404 File not found");
 		} catch (IOException e) {
-			System.out.println("IOException, something's fucked. File was not read");
+			System.out.println("IOException, something's amiss. File was not read");
 		}
 
 	}
@@ -55,7 +55,7 @@ public class MineText {
 		} catch (FileNotFoundException e) {
 			System.out.println("404 File not found");
 		} catch (IOException e) {
-			System.out.println("IOException, something's fucked. File was not read");
+			System.out.println("IOException, something's amiss. File was not read");
 		}
 		return fileReadout;
 
@@ -65,11 +65,10 @@ public class MineText {
 		String fileName = "Minefield_Display.txt";
 		Path path = Paths.get("src", "co", "grandcircus", fileName);
 		File file = path.toFile();
-		PrintWriter output; // These two lines could be one line declaring and initializing. Putting it
-							// outside of the trycatch allows us to close the output in the 'finally' logic
+		PrintWriter output; 
+		
 		output = null;
-		// This method will take the input from the reader (A,3 for instance) and then
-		// scan the (array?txt?) and determine whether or not to reveal things.
+		// This method writes the blank minefield into the txt document. 
 		try {
 			output = new PrintWriter(new FileOutputStream(file));
 			for (int i = 0; i < minefield.getWidth(); i++) {
@@ -134,18 +133,32 @@ public class MineText {
 		BufferedReader br;
 		try {
 			br = new BufferedReader(new FileReader(file));
-			for (int i = 0; i < (yAxis - 1); i++) {
+			for (int i = 0; i < (yAxis - 1); i++) { 
+				/*This for loop will continue reading the txt document line by line until 
+				*it reaches the row that the user selected with their coordinate input. This is
+				*half of the equation that allows us to locate a specific spot in the 
+				 * txt file
+				 */
 				readString = br.readLine();
 			}
-			br.skip(xAxis - 1);
+			br.skip(xAxis - 1); 
+			/*This line initiates at the yAxis coordinate and skips
+			 * characters until it gets to the xAxis input
+			 * 
+			 */
 			txtChar = br.read();
+			//Now that the reader is progressed to the coordinate input,
+			//It will read the next character alone
+			
 			readString = Character.toString((char)txtChar);
-			//System.out.println(readString);
+			//Unfortunately, it can only read that character as a unicode decimal!
+			//So we have to convert it to its character state
+			//And finally convert it back into a String (the minefield is an array of Strings)
 			br.close();
 		} catch (FileNotFoundException e) {
 			System.out.println("404 File not found");
 		} catch (IOException e) {
-			System.out.println("IOException, something's fucked. File was not read");
+			System.out.println("IOException, something's amiss. File was not read");
 		}
 
 		return readString;
@@ -167,8 +180,8 @@ public class MineText {
 		}
 	}
 
-	// Create method to take user coordinates, find that element in the array, then
-	// write that element into the txt file.
+	// Method to take user coordinates, find that element in the array, then
+	// write that element into the txt file at the specified coordinates.
 	// If it's a space, it will look for spaces and numbers to display. Loop for
 	// spaces. If it's a number, just reveal.
 	public static void writeInput(Minefield minefield, int xAxis, int yAxis) {
@@ -186,8 +199,13 @@ public class MineText {
 		PrintWriter output = null;
 		BufferedReader br = null;
 
-		// This method will take the input from the reader (A,3 for instance) and then
-		// scan the array and determine whether or not to reveal things.
+		/*What's happening in the below loop is we're reading through
+		 * the existing txt document, writing it to a new temp txt until 
+		 * we get to the user coordinate, then dropping the 2D array element
+		 * into that coordinate, then reading and writing the rest of the display
+		 * to the temp txt file. The old file is deleted and the temp file is renamed to replace
+		 * the old file.
+		 */
 		try {
 			output = new PrintWriter(new FileOutputStream(tempFile));
 			br = new BufferedReader(new FileReader(readFile));
@@ -203,7 +221,7 @@ public class MineText {
 							output.println(arraySpot);
 							line = br.readLine();
 						} else {
-							output.print(arraySpot); // paste here
+							output.print(arraySpot); 
 						}
 					} else {
 						if (i == (minefield.getWidth() - 1)) {
@@ -224,6 +242,17 @@ public class MineText {
 			readFile.delete();
 			tempFile.renameTo(readFile);
 			output.close();
+
+			/*
+			 * Below, we're using method recursion to utilize readInputTxt
+			 * within itself. Like the logic that incremented adjacent numbers during minefield creation,
+			 * each one of these trycatch blocks is 
+			 * scanning a spot adjacent to the user input, but only if the user 
+			 * input coordinate is a 0 in the minefield. If that spot
+			 * is still hidden in the txt AND if the corresponding minefield
+			 * location is not a bomb, then that spot is revealed.
+			 * This logic is repeated for all surrounding coordinates.
+			 */
 			if (arraySpot.equals("0")) {
 				try {
 					if (readInputTxt(xAxis, yAxis-1).equals("@")) {
@@ -306,7 +335,6 @@ public class MineText {
 
 		String fileName = "Minefield_Display.txt";
 		Path path = Paths.get("src", "co", "grandcircus", fileName);
-		// String test = "test";
 		Path readFilePath = Paths.get("src", "co", "grandcircus", fileName);
 		File readFile = readFilePath.toFile();
 		String tempFileName = "temp.txt";
@@ -316,8 +344,7 @@ public class MineText {
 		PrintWriter output = null;
 		BufferedReader br = null;
 
-		// This method will take the input from the reader (A,3 for instance) and then
-		// scan the array and determine whether or not to reveal things.
+		
 		try {
 			output = new PrintWriter(new FileOutputStream(tempFile));
 			br = new BufferedReader(new FileReader(readFile));
@@ -332,8 +359,14 @@ public class MineText {
 						if (i == (minefield.getWidth() - 1)) {
 							if (readInputTxt(xAxis, yAxis).equals("F")) {
 								output.println("@");
+								//Uses our readInputTxt method to find this coordinate
+								//If the user picks a coordinate to Flag and it
+								//is ALREADY a flag, it will revert back to its
+								//original form (combining flag/deflag)
 							} else {
 								output.println("F");
+								//If the coordinate is displayed as blank,
+								//a flag is placed at that coordinate.
 							}
 							line = br.readLine();
 						} else {
