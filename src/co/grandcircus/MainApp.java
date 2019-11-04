@@ -70,7 +70,7 @@ public class MainApp {
 			minefield = new Minefield(16, 16, 40);
 			break;
 		case 3:
-			minefield = new Minefield(16, 30, 99);
+			minefield = new Minefield(30, 16, 99);
 			break;
 		case 4:
 			int width = Validator.getInt(scnr, "Enter minefield width:\n", 3, 99);
@@ -102,14 +102,14 @@ public class MainApp {
 	}
 
 	public static void uncoverSquare(Minefield minefield) {
-		int xAxis = Validator.getInt(scnr, "Enter the x coordinate:", 1, minefield.getHeight());
-		int yAxis = Validator.getInt(scnr, "Enter the y coordinate:", 1, minefield.getWidth());
+		int xAxis = Validator.getInt(scnr, "Enter the x coordinate:", 1, minefield.getWidth());
+		int yAxis = Validator.getInt(scnr, "Enter the y coordinate:", 1, minefield.getHeight());
 		int cont = 0;
 		String selection = MineText.readInputTxt(xAxis, yAxis);
 		while (!selection.equals("@") && !selection.equals("F")) {
 			System.out.println("Invalid selection. Try again:");
-			xAxis = Validator.getInt(scnr, "Enter the x coordinate:", 1, minefield.getHeight());
-			yAxis = Validator.getInt(scnr, "Enter the y coordinate:", 1, minefield.getWidth());
+			xAxis = Validator.getInt(scnr, "Enter the x coordinate:", 1, minefield.getWidth());
+			yAxis = Validator.getInt(scnr, "Enter the y coordinate:", 1, minefield.getHeight());
 			selection = MineText.readInputTxt(xAxis, yAxis);
 		}
 		if (!minefield.getMinefield()[yAxis-1][xAxis-1].equals("*")) {
@@ -126,8 +126,8 @@ public class MainApp {
 	public static void flagSquare(Minefield minefield) {
 		//Below takes in and validates user coordinates, ensures that
 		//the coordinates are applicable to the minefield
-		int xAxis = Validator.getInt(scnr, "Enter the x coordinate:", 1, minefield.getHeight());
-		int yAxis = Validator.getInt(scnr, "Enter the y coordinate:", 1, minefield.getWidth());
+		int xAxis = Validator.getInt(scnr, "Enter the x coordinate:", 1, minefield.getWidth());
+		int yAxis = Validator.getInt(scnr, "Enter the y coordinate:", 1, minefield.getHeight());
 		String selection = MineText.readInputTxt(xAxis, yAxis);
 		//While loop below uses readInputTxt method to 
 		//validate that the user has selected
@@ -135,8 +135,8 @@ public class MainApp {
 		//invalid/wouldn't do anything. 
 		while (!selection.equals("@") && !selection.equals("F")) {
 			System.out.println("Invalid selection. Try again:");
-			xAxis = Validator.getInt(scnr, "Enter the x coordinate:", 1, minefield.getHeight());
-			yAxis = Validator.getInt(scnr, "Enter the y coordinate:", 1, minefield.getWidth());
+			xAxis = Validator.getInt(scnr, "Enter the x coordinate:", 1, minefield.getWidth());
+			yAxis = Validator.getInt(scnr, "Enter the y coordinate:", 1, minefield.getHeight());
 			selection = MineText.readInputTxt(xAxis, yAxis);
 		}
 			MineText.writeFlag(minefield, xAxis, yAxis);

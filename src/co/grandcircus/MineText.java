@@ -70,9 +70,9 @@ public class MineText {
 		// This method writes the blank minefield into the txt document.
 		try {
 			output = new PrintWriter(new FileOutputStream(file));
-			for (int i = 0; i < minefield.getWidth(); i++) {
-				for (int j = 0; j < minefield.getHeight(); j++) {
-					if (j == minefield.getHeight() - 1) {
+			for (int i = 0; i < minefield.getHeight(); i++) {
+				for (int j = 0; j < minefield.getWidth(); j++) {
+					if (j == minefield.getWidth() - 1) {
 						output.println("@");
 					} else {
 						output.print("@");
