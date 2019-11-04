@@ -14,11 +14,17 @@ public class MainApp {
 		MineText.createFile();
 		String cont = "yes";
 		System.out.println("*** WELCOME TO MINEFIELD ***");
+		long start = System.currentTimeMillis();
+		
 		while (cont.equalsIgnoreCase("yes")) {
 			System.out.println();
 			minefield = generateMinefield();
 			MineText.writeToFile(minefield);
 			playMinefield(minefield);
+			long finish = System.currentTimeMillis();
+			long timeElapsed = (finish - start)/1000;
+			
+			System.out.println("Your completion time was: " + timeElapsed + " seconds!");
 			System.out.println("Do you want to play again? (yes/no)");
 			cont = scnr.nextLine();
 		}
