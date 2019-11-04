@@ -17,3 +17,5 @@ target/
 
 *.class
 /bin
+
+src/co/grandcircus/Minefield_Display.txt

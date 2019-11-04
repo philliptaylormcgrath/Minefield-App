@@ -95,7 +95,9 @@ public class MinefieldGUI extends JFrame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		//Declare variables 
 		Minefield minefield;
+		//H
 		HashMap<String, JButton> jButtonMap = new HashMap<>();
 		HashMap<String, JLabel> jLabelMap = new HashMap<>();
 		String command = e.getActionCommand();
