@@ -11,9 +11,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-
+//All of the methods that read from or write to the txt document live in this class
 public class MineText {
-	public static void readFromFile() {
+	public static void readFromFile() { //reads the txt document
 		String fileName = "Minefield_Display.txt";
 		Path path = Paths.get("src", "co", "grandcircus", fileName);
 		File file = path.toFile();
@@ -36,7 +36,7 @@ public class MineText {
 
 	}
 
-	public static ArrayList<String> readEntireFile() {
+	public static ArrayList<String> readEntireFile() { //reads txt document and returns an arrayList to use in the console
 		ArrayList<String> fileReadout = new ArrayList<>();
 		String fileName = "Minefield_Display.txt";
 		Path path = Paths.get("src", "co", "grandcircus", fileName);
@@ -87,7 +87,7 @@ public class MineText {
 		}
 	}
 
-	public static void createFile() {
+	public static void createFile() { //Creates txt document to interface with
 		String fileName = "Minefield_Display.txt";
 		Path path = Paths.get("src", "co", "grandcircus", fileName);
 		if (Files.notExists(path)) {
@@ -166,12 +166,13 @@ public class MineText {
 
 	}
 
-	public static void createTempFile(String tempName) {
+	public static void createTempFile(String tempName) { //Method creates a temp file, which we use to store temporary information
 		String tempFileName = tempName;
 		Path path = Paths.get("src", "co", "grandcircus", tempFileName);
 		if (Files.notExists(path)) {
 			try {
 				Files.createFile(path);
+			
 				// System.out.println("File successfully created");
 			} catch (IOException e) {
 				System.out.println("Problem creating file. File not created");
@@ -188,9 +189,8 @@ public class MineText {
 	public static void writeInput(Minefield minefield, int xAxis, int yAxis) {
 
 		String[][] minefieldArr = minefield.getMinefield();
-		String arraySpot = minefieldArr[yAxis - 1][xAxis - 1];
+		String arraySpot = minefieldArr[yAxis - 1][xAxis - 1];//This variable is set to the minefield array contents at specified indices. 
 		String fileName = "Minefield_Display.txt";
-		// String test = "test";
 		Path readFilePath = Paths.get("src", "co", "grandcircus", fileName);
 		File readFile = readFilePath.toFile();
 		String tempFileName = "temp.txt";
@@ -214,12 +214,12 @@ public class MineText {
 			while (line != null) {
 				for (int i = 0; i < (yAxis - 1); i++) {
 					output.println(line);
-					line = br.readLine();
+					line = br.readLine(); //Reads and prints one line at a time until reaching the final line before input
 				}
 				for (int i = 0; i < minefield.getWidth(); i++) {
 					if (i == (xAxis - 1)) {
 						if (i == (minefield.getWidth() - 1)) {
-							output.println(arraySpot);
+							output.println(arraySpot); //skips
 							line = br.readLine();
 						} else {
 							output.print(arraySpot);
@@ -257,7 +257,9 @@ public class MineText {
 				try {
 					if (readInputTxt(xAxis, yAxis - 1).equals("@")) {
 
-						if (!minefieldArr[yAxis - 2][xAxis - 1].equals("*")) {
+						if (!minefieldArr[yAxis - 2][xAxis - 1].equals("*")) { //These lines are redundant logically, but 
+							//removing them causes breakage. Load bearing code. Causes OoB if it isn't there, which is caught
+							//but then causes the fields not to reveal correctly
 							MineText.writeInput(minefield, xAxis, yAxis - 1);
 						}
 					}
@@ -343,6 +345,8 @@ public class MineText {
 		File tempFile = tempFilePath.toFile();
 		PrintWriter output = null;
 		BufferedReader br = null;
+		
+		
 
 		try {
 			output = new PrintWriter(new FileOutputStream(tempFile));
@@ -352,7 +356,7 @@ public class MineText {
 				for (int i = 0; i < (yAxis - 1); i++) {
 					output.println(line);
 					line = br.readLine();
-				} // Logic here}
+				}
 				for (int i = 0; i < minefield.getWidth(); i++) {
 					if (i == (xAxis - 1)) {
 						if (i == (minefield.getWidth() - 1)) {
@@ -362,6 +366,9 @@ public class MineText {
 								// If the user picks a coordinate to Flag and it
 								// is ALREADY a flag, it will revert back to its
 								// original form (combining flag/deflag)
+								//This is in two different statements depending on positioning. If the element
+								//being replaced is the final element of a line, it uses 'println' as a 
+								//line break.
 							} else {
 								output.println("F");
 								// If the coordinate is displayed as blank,
@@ -371,12 +378,14 @@ public class MineText {
 						} else {
 							System.out.println(readInputTxt(xAxis, yAxis));
 							if (readInputTxt(xAxis, yAxis).equals("F")) {
+								//If the location is NOT the final element of a line, it will print only one character
 								output.print("@");
 							} else {
 								output.print("F");
 							}
 						}
 					} else {
+						//Continues printing the rest of the Minefield_Display.txt
 						if (i == (minefield.getWidth() - 1)) {
 							output.println(line.charAt(i));
 							line = br.readLine();
@@ -402,11 +411,11 @@ public class MineText {
 		}
 
 		finally {
-			output.close();
+			output.close(); //Not just good practice; totally necessary!
 		}
 	}
 
-	public static void revealMinefield(Minefield minefield) {
+	public static void revealMinefield(Minefield minefield) { //Method is called at the end of the game to reveal the entire minefield
 		String[][] minefieldArr = minefield.getMinefield();
 		String fileName = "Minefield_Display.txt";
 		Path path = Paths.get("src", "co", "grandcircus", fileName);
@@ -414,15 +423,15 @@ public class MineText {
 		PrintWriter output;
 
 		output = null;
-		// This method writes the blank minefield into the txt document.
+		
 		try {
-			output = new PrintWriter(new FileOutputStream(file));
+			output = new PrintWriter(new FileOutputStream(file)); //This logic just reads the minefield and writes it to the txt file
 			for (int i = 0; i < minefield.getHeight(); i++) {
 				for (int j = 0; j < minefield.getWidth(); j++) {
 					if (j == minefield.getWidth() - 1) {
 						output.println(minefieldArr[i][j]);
 					} else {
-						output.print(minefieldArr[i][j]);
+						output.print(minefieldArr[i][j]); //Once again, if/else statement is for formatting/proper line breaks
 					}
 				}
 			}
@@ -432,5 +441,5 @@ public class MineText {
 		} finally {
 			output.close();
 		}
-	}
+	} 
 }
