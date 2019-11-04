@@ -2,18 +2,28 @@ package co.grandcircus;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Insets;
+import java.awt.SplashScreen;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -95,7 +105,6 @@ public class MinefieldGUI extends JFrame implements ActionListener {
 		layoutConst.gridy = 1;
 		layoutConst.insets = new Insets(10, 10, 10, 10);
 		add(difficultyBox, layoutConst);
-
 		pack();
 	}
 
@@ -162,6 +171,25 @@ public class MinefieldGUI extends JFrame implements ActionListener {
 			HashMap<String, JLabel> jLabelMap) {
 		// Record the game start time
 		long start = System.currentTimeMillis();
+		
+		Clip clip = null;
+		try {
+			String fileName = "harvey house 2.wav";
+			Path path = Paths.get("src", "co", "grandcircus", fileName);
+			File file = path.toFile();
+			AudioInputStream audioIn = AudioSystem.getAudioInputStream(file);
+			// Get a sound clip resource.
+			clip = AudioSystem.getClip();
+			// Open audio clip and load samples from the audio input stream.
+			clip.open(audioIn);
+			clip.loop(Clip.LOOP_CONTINUOUSLY);
+		} catch (UnsupportedAudioFileException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (LineUnavailableException e) {
+			e.printStackTrace();
+		}
 
 		// For loop creates JButtons corresponding to each square in the minefield and
 		// appends them to the JFrame
@@ -170,6 +198,7 @@ public class MinefieldGUI extends JFrame implements ActionListener {
 			for (int j = 0; j < minefield.getWidth(); j++) {
 				int iVal = i;
 				int jVal = j;
+				Clip stopClip = clip;
 				String name = "square" + Integer.toString(counter);
 				String display = " ";
 				JButton square = new JButton(new AbstractAction(display) {
@@ -186,7 +215,30 @@ public class MinefieldGUI extends JFrame implements ActionListener {
 
 						// Define action if the user clicked on a mine
 						if (square.getText().equals("*")) {
-
+							stopClip.stop();
+							Clip clip;
+							try {
+								String fileName = "explosion.wav";
+								Path path = Paths.get("src", "co", "grandcircus", fileName);
+								File file = path.toFile();
+								AudioInputStream audioIn = AudioSystem.getAudioInputStream(file);
+								// Get a sound clip resource.
+								clip = AudioSystem.getClip();
+								// Open audio clip and load samples from the audio input stream.
+								clip.open(audioIn);
+								clip.start();
+							} catch (UnsupportedAudioFileException | IOException | LineUnavailableException e1) {
+							}
+							final SplashScreen splash = SplashScreen.getSplashScreen();
+					        if (splash == null) {
+					            System.out.println("SplashScreen.getSplashScreen() returned null");
+					            return;
+					        }
+					        Graphics2D g = splash.createGraphics();
+					        if (g == null) {
+					            System.out.println("g is null");
+					            return;
+					        }
 							// Clear and refresh the JFrame
 							getContentPane().removeAll();
 							revalidate();
@@ -316,6 +368,21 @@ public class MinefieldGUI extends JFrame implements ActionListener {
 							// If the counter equals the total number of non-mine squares in the minefield,
 							// the user has won
 							if (counter == (minefield.getHeight() * minefield.getWidth() - minefield.getNumBombs())) {
+								stopClip.stop();
+								Clip clip;
+								try {
+									String fileName = "cool_disco .wav";
+									Path path = Paths.get("src", "co", "grandcircus", fileName);
+									File file = path.toFile();
+									AudioInputStream audioIn = AudioSystem.getAudioInputStream(file);
+									// Get a sound clip resource.
+									clip = AudioSystem.getClip();
+									// Open audio clip and load samples from the audio input stream.
+									clip.open(audioIn);
+									clip.loop(Clip.LOOP_CONTINUOUSLY);
+								} catch (UnsupportedAudioFileException | IOException | LineUnavailableException e1) {
+								}
+								
 								getContentPane().removeAll(); // Clear the JFrame
 
 								// Create and add new JLabel letting user know they won
