@@ -32,6 +32,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
+import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
@@ -238,9 +239,9 @@ public class MinefieldGUI extends JFrame implements ActionListener {
 							// Create new GridBag layout
 							GridBagConstraints layoutConst = new GridBagConstraints();
 
-							// For loop repopulates the JFrame with JLabels displaying the revealed
+							// For loop re-populates the JFrame with JLabels displaying the revealed
 							// minefield
-							for (int i = 2; i < minefield.getMinefield().length; i++) {
+							for (int i = 2; i < minefield.getMinefield().length+2; i++) {
 								for (int j = 0; j < minefield.getMinefield()[0].length; j++) {
 									JLabel clearLabel = new JLabel("", SwingConstants.CENTER);
 									if (minefield.getMinefield()[i - 2][j].equals("0")) {
@@ -340,6 +341,69 @@ public class MinefieldGUI extends JFrame implements ActionListener {
 							if (minefield.getMinefield()[iVal][jVal].equals("0")) {
 								checkAdjacentSquares(jButtonMap, jLabelMap, minefield, iVal, jVal, name);
 							}
+							int bombCounter = 0;
+							int counter = 0;
+							String nextName = "square1";
+							for (int i = 0; i < minefield.getHeight(); i++) {
+								for (int j = 0; j < minefield.getWidth(); j++) {
+									
+									if (minefield.getMinefield()[i][j].equals("*")
+											&& jButtonMap.get(nextName).getIcon() != null) {
+										bombCounter++;
+									}
+									
+									if (!minefield.getMinefield()[i][j].equals("*")
+											&& jLabelMap.containsKey(nextName)) {
+										counter++;
+									}
+									nextName = nextName.substring(0, 6) + Integer
+											.toString(Integer.parseInt(nextName.substring(6, nextName.length())) + 1);
+								}
+							}
+
+							// If the counter equals the total number of non-mine squares in the minefield,
+							// the user has won
+							if ((bombCounter == minefield.getNumBombs()) && (counter == (minefield.getHeight() * minefield.getWidth() - minefield.getNumBombs()))) {
+								// Stop soundtrack loop
+								stopClip.stop();
+
+								// Create new clip of victory music and loop it
+								Clip clip;
+								try {
+									String fileName = "cool_disco .wav";
+									Path path = Paths.get("src", "co", "grandcircus", fileName);
+									File file = path.toFile();
+									AudioInputStream audioIn = AudioSystem.getAudioInputStream(file);
+									// Get a sound clip resource.
+									clip = AudioSystem.getClip();
+									// Open audio clip and load samples from the audio input stream.
+									clip.open(audioIn);
+									clip.loop(Clip.LOOP_CONTINUOUSLY);
+								} catch (UnsupportedAudioFileException | IOException | LineUnavailableException e1) {
+								}
+
+								getContentPane().removeAll(); // Clear the JFrame
+
+								// Create and add new JLabel letting user know they won
+								JLabel youWin = new JLabel("YOU WIN!");
+								layoutConst = new GridBagConstraints();
+								layoutConst.gridx = 0;
+								layoutConst.gridy = 0;
+								add(youWin, layoutConst);
+
+								// Gather game end time and calculate total time spent
+								long finish = System.currentTimeMillis();
+								long timeElapsed = (finish - start) / 1000;
+
+								// Create new JLabel to show total time spent playing and add to Jframe
+								JLabel timer = new JLabel("TIME ELAPSED: " + timeElapsed);
+								layoutConst = new GridBagConstraints();
+								layoutConst.gridx = 0;
+								layoutConst.gridy = 1;
+								add(timer, layoutConst);
+
+								revalidate();// Refresh JFrame
+							}
 						}
 					}
 				});
@@ -371,6 +435,7 @@ public class MinefieldGUI extends JFrame implements ActionListener {
 							// Refresh and resize JFrame
 							pack();
 							revalidate();
+							int bombCounter = 0;
 							int counter = 0;
 							String nextName = "square1";
 							for (int i = 0; i < minefield.getHeight(); i++) {
@@ -378,13 +443,13 @@ public class MinefieldGUI extends JFrame implements ActionListener {
 									
 									if (minefield.getMinefield()[i][j].equals("*")
 											&& jButtonMap.get(nextName).getIcon() != null) {
-										counter++;
+										bombCounter++;
 									}
 									
-									/*if (!minefield.getMinefield()[i][j].equals("*")
+									if (!minefield.getMinefield()[i][j].equals("*")
 											&& jLabelMap.containsKey(nextName)) {
 										counter++;
-									}*/
+									}
 									nextName = nextName.substring(0, 6) + Integer
 											.toString(Integer.parseInt(nextName.substring(6, nextName.length())) + 1);
 								}
@@ -392,8 +457,7 @@ public class MinefieldGUI extends JFrame implements ActionListener {
 
 							// If the counter equals the total number of non-mine squares in the minefield,
 							// the user has won
-							if (counter == minefield.getNumBombs()) {
-							//if (counter == (minefield.getHeight() * minefield.getWidth() - minefield.getNumBombs())) {
+							if ((bombCounter == minefield.getNumBombs()) && (counter == (minefield.getHeight() * minefield.getWidth() - minefield.getNumBombs()))) {
 								// Stop soundtrack loop
 								stopClip.stop();
 
