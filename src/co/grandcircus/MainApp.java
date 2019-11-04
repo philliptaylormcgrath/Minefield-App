@@ -14,11 +14,17 @@ public class MainApp {
 		MineText.createFile();
 		String cont = "yes";
 		System.out.println("*** WELCOME TO MINEFIELD ***");
+		long start = System.currentTimeMillis();
+		
 		while (cont.equalsIgnoreCase("yes")) {
 			System.out.println();
 			minefield = generateMinefield();
 			MineText.writeToFile(minefield);
 			playMinefield(minefield);
+			long finish = System.currentTimeMillis();
+			long timeElapsed = (finish - start)/1000;
+			
+			System.out.println("Your completion time was: " + timeElapsed + " seconds!");
 			System.out.println("Do you want to play again? (yes/no)");
 			cont = scnr.nextLine();
 		}
@@ -117,9 +123,15 @@ public class MainApp {
 	}
 
 	public static void flagSquare(Minefield minefield) {
+		//Below takes in and validates user coordinates, ensures that
+		//the coordinates are applicable to the minefield
 		int xAxis = Validator.getInt(scnr, "Enter the x coordinate:", 1, minefield.getHeight());
 		int yAxis = Validator.getInt(scnr, "Enter the y coordinate:", 1, minefield.getWidth());
 		String selection = MineText.readInputTxt(xAxis, yAxis);
+		//While loop below uses readInputTxt method to 
+		//validate that the user has selected
+		//either a flag or blank spot. Selecting a revealed number is
+		//invalid/wouldn't do anything. 
 		while (!selection.equals("@") && !selection.equals("F")) {
 			System.out.println("Invalid selection. Try again:");
 			xAxis = Validator.getInt(scnr, "Enter the x coordinate:", 1, minefield.getHeight());

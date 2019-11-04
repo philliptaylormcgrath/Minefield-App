@@ -36,7 +36,7 @@ public class Minefield {
 			}
 		}
 
-		// Randomly sow array indexes with mines (*) until the number of mines provided
+		// Randomly sow array indices with mines (*) until the number of mines provided
 		// with
 		// constructor have been placed
 		while (mineCount < numBombs) {
@@ -52,6 +52,9 @@ public class Minefield {
 		// For every other array index in the minefield, check every adjacent array
 		// index. If any of the indices contain a mine, increment the number displayed
 		// in the original array index.
+		//We had to separate each coordinate check into its own try-catch. Otherwise the
+		//numbers on the outside of the minefield were not incrementing correctly due to 
+		//OoB exceptions.
 		for (int i = 0; i < minefield.length; i++) {
 			for (int j = 0; j < minefield[i].length; j++) {
 				if (minefield[i][j].equals("*")) {
