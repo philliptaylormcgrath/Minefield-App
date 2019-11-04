@@ -1,7 +1,6 @@
 package co.grandcircus;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -25,7 +24,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
-import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
@@ -174,7 +172,7 @@ public class MinefieldGUI extends JFrame implements ActionListener {
 							GridBagConstraints layoutConst = new GridBagConstraints();
 							for (int i = 2; i < minefield.getMinefield().length; i++) {
 								for (int j = 0; j < minefield.getMinefield()[0].length; j++) {
-									JLabel clearLabel = new JLabel("",SwingConstants.CENTER);
+									JLabel clearLabel = new JLabel("", SwingConstants.CENTER);
 									if (minefield.getMinefield()[i - 2][j].equals("0")) {
 										clearLabel.setText("");
 									} else {
@@ -263,16 +261,9 @@ public class MinefieldGUI extends JFrame implements ActionListener {
 											&& jLabelMap.containsKey(nextName)) {
 										counter++;
 									}
-									if (nextName.length() == 7) {
-										nextName = nextName.substring(0, 6)
-												+ Integer.toString(Integer.parseInt(nextName.substring(6, 7)) + 1);
-									} else if (nextName.length() == 8) {
-										nextName = nextName.substring(0, 6)
-												+ Integer.toString(Integer.parseInt(nextName.substring(6, 8)) + 1);
-									} else if (nextName.length() == 9) {
-										nextName = nextName.substring(0, 6)
-												+ Integer.toString(Integer.parseInt(nextName.substring(6, 9)) + 1);
-									}
+									nextName = nextName.substring(0, 6) + Integer
+											.toString(Integer.parseInt(nextName.substring(6, nextName.length())) + 1);
+
 								}
 							}
 							System.out.println("TOTAL:" + counter);
@@ -341,16 +332,8 @@ public class MinefieldGUI extends JFrame implements ActionListener {
 
 		try {
 			if (!minefield.getMinefield()[iVal + 1][jVal].equals("*")) {
-				if (nextName.length() == 7) {
-					nextName = nextName.substring(0, 6)
-							+ Integer.toString(Integer.parseInt(nextName.substring(6, 7)) + minefield.getWidth());
-				} else if (nextName.length() == 8) {
-					nextName = nextName.substring(0, 6)
-							+ Integer.toString(Integer.parseInt(nextName.substring(6, 8)) + minefield.getWidth());
-				} else if (nextName.length() == 9) {
-					nextName = nextName.substring(0, 6)
-							+ Integer.toString(Integer.parseInt(nextName.substring(6, 9)) + minefield.getWidth());
-				}
+				nextName = nextName.substring(0, 6) + Integer
+						.toString(Integer.parseInt(nextName.substring(6, nextName.length())) + minefield.getWidth());
 				if (!jLabelMap.containsKey(nextName)) {
 					jButtonMap.get(nextName).doClick();
 				}
@@ -359,16 +342,8 @@ public class MinefieldGUI extends JFrame implements ActionListener {
 		}
 		try {
 			if (!minefield.getMinefield()[iVal + 1][jVal - 1].equals("*")) {
-				if (nextName1.length() == 7) {
-					nextName1 = nextName1.substring(0, 6)
-							+ Integer.toString(Integer.parseInt(nextName1.substring(6, 7)) + minefield.getWidth() - 1);
-				} else if (nextName1.length() == 8) {
-					nextName1 = nextName1.substring(0, 6)
-							+ Integer.toString(Integer.parseInt(nextName1.substring(6, 8)) + minefield.getWidth() - 1);
-				} else if (nextName1.length() == 9) {
-					nextName1 = nextName1.substring(0, 6)
-							+ Integer.toString(Integer.parseInt(nextName1.substring(6, 9)) + minefield.getWidth() - 1);
-				}
+				nextName1 = nextName1.substring(0, 6) + Integer.toString(
+						Integer.parseInt(nextName1.substring(6, nextName1.length())) + minefield.getWidth() - 1);
 				if (!jLabelMap.containsKey(nextName1)) {
 					jButtonMap.get(nextName1).doClick();
 				}
@@ -377,16 +352,9 @@ public class MinefieldGUI extends JFrame implements ActionListener {
 		}
 		try {
 			if (!minefield.getMinefield()[iVal + 1][jVal + 1].equals("*")) {
-				if (nextName2.length() == 7) {
-					nextName2 = nextName2.substring(0, 6)
-							+ Integer.toString(Integer.parseInt(nextName2.substring(6, 7)) + minefield.getWidth() + 1);
-				} else if (nextName2.length() == 8) {
-					nextName2 = nextName2.substring(0, 6)
-							+ Integer.toString(Integer.parseInt(nextName2.substring(6, 8)) + minefield.getWidth() + 1);
-				} else if (nextName2.length() == 9) {
-					nextName2 = nextName2.substring(0, 6)
-							+ Integer.toString(Integer.parseInt(nextName2.substring(6, 9)) + minefield.getWidth() + 1);
-				}
+				nextName2 = nextName2.substring(0, 6) + Integer.toString(
+						Integer.parseInt(nextName2.substring(6, nextName2.length())) + minefield.getWidth() + 1);
+
 				if (!jLabelMap.containsKey(nextName2)) {
 					jButtonMap.get(nextName2).doClick();
 				}
@@ -395,16 +363,9 @@ public class MinefieldGUI extends JFrame implements ActionListener {
 		}
 		try {
 			if (!minefield.getMinefield()[iVal - 1][jVal].equals("*")) {
-				if (nextName3.length() == 7) {
-					nextName3 = nextName3.substring(0, 6)
-							+ Integer.toString(Integer.parseInt(nextName3.substring(6, 7)) - minefield.getWidth());
-				} else if (nextName1.length() == 8) {
-					nextName3 = nextName3.substring(0, 6)
-							+ Integer.toString(Integer.parseInt(nextName3.substring(6, 8)) - minefield.getWidth());
-				} else if (nextName1.length() == 9) {
-					nextName3 = nextName3.substring(0, 6)
-							+ Integer.toString(Integer.parseInt(nextName3.substring(6, 9)) - minefield.getWidth());
-				}
+				nextName3 = nextName3.substring(0, 6) + Integer
+						.toString(Integer.parseInt(nextName3.substring(6, nextName3.length())) - minefield.getWidth());
+
 				if (!jLabelMap.containsKey(nextName3)) {
 					jButtonMap.get(nextName3).doClick();
 				}
@@ -413,16 +374,8 @@ public class MinefieldGUI extends JFrame implements ActionListener {
 		}
 		try {
 			if (!minefield.getMinefield()[iVal - 1][jVal - 1].equals("*")) {
-				if (nextName4.length() == 7) {
-					nextName4 = nextName4.substring(0, 6)
-							+ Integer.toString(Integer.parseInt(nextName4.substring(6, 7)) - minefield.getWidth() - 1);
-				} else if (nextName4.length() == 8) {
-					nextName4 = nextName4.substring(0, 6)
-							+ Integer.toString(Integer.parseInt(nextName4.substring(6, 8)) - minefield.getWidth() - 1);
-				} else if (nextName4.length() == 9) {
-					nextName4 = nextName4.substring(0, 6)
-							+ Integer.toString(Integer.parseInt(nextName4.substring(6, 9)) - minefield.getWidth() - 1);
-				}
+				nextName4 = nextName4.substring(0, 6) + Integer.toString(
+						Integer.parseInt(nextName4.substring(6, nextName4.length())) - minefield.getWidth() - 1);
 				if (!jLabelMap.containsKey(nextName4)) {
 					jButtonMap.get(nextName4).doClick();
 				}
@@ -431,16 +384,8 @@ public class MinefieldGUI extends JFrame implements ActionListener {
 		}
 		try {
 			if (!minefield.getMinefield()[iVal - 1][jVal + 1].equals("*")) {
-				if (nextName5.length() == 7) {
-					nextName5 = nextName5.substring(0, 6)
-							+ Integer.toString(Integer.parseInt(nextName5.substring(6, 7)) - minefield.getWidth() + 1);
-				} else if (nextName5.length() == 8) {
-					nextName5 = nextName5.substring(0, 6)
-							+ Integer.toString(Integer.parseInt(nextName5.substring(6, 8)) - minefield.getWidth() + 1);
-				} else if (nextName5.length() == 9) {
-					nextName5 = nextName5.substring(0, 6)
-							+ Integer.toString(Integer.parseInt(nextName5.substring(6, 9)) - minefield.getWidth() + 1);
-				}
+				nextName5 = nextName5.substring(0, 6) + Integer.toString(
+						Integer.parseInt(nextName5.substring(6, nextName5.length())) - minefield.getWidth() + 1);
 				if (!jLabelMap.containsKey(nextName5)) {
 					jButtonMap.get(nextName5).doClick();
 				}
@@ -449,16 +394,8 @@ public class MinefieldGUI extends JFrame implements ActionListener {
 		}
 		try {
 			if (!minefield.getMinefield()[iVal][jVal + 1].equals("*")) {
-				if (nextName6.length() == 7) {
-					nextName6 = nextName6.substring(0, 6)
-							+ Integer.toString(Integer.parseInt(nextName6.substring(6, 7)) + 1);
-				} else if (nextName6.length() == 8) {
-					nextName6 = nextName6.substring(0, 6)
-							+ Integer.toString(Integer.parseInt(nextName6.substring(6, 8)) + 1);
-				} else if (nextName6.length() == 9) {
-					nextName6 = nextName6.substring(0, 6)
-							+ Integer.toString(Integer.parseInt(nextName6.substring(6, 9)) + 1);
-				}
+				nextName6 = nextName6.substring(0, 6)
+						+ Integer.toString(Integer.parseInt(nextName6.substring(6, nextName6.length())) + 1);
 				if (!jLabelMap.containsKey(nextName6)) {
 					jButtonMap.get(nextName6).doClick();
 				}
@@ -467,16 +404,8 @@ public class MinefieldGUI extends JFrame implements ActionListener {
 		}
 		try {
 			if (!minefield.getMinefield()[iVal][jVal - 1].equals("*")) {
-				if (nextName7.length() == 7) {
-					nextName7 = nextName7.substring(0, 6)
-							+ Integer.toString(Integer.parseInt(nextName7.substring(6, 7)) - 1);
-				} else if (nextName7.length() == 8) {
-					nextName7 = nextName7.substring(0, 6)
-							+ Integer.toString(Integer.parseInt(nextName7.substring(6, 8)) - 1);
-				} else if (nextName7.length() == 9) {
-					nextName7 = nextName7.substring(0, 6)
-							+ Integer.toString(Integer.parseInt(nextName7.substring(6, 9)) - 1);
-				}
+				nextName7 = nextName7.substring(0, 6)
+						+ Integer.toString(Integer.parseInt(nextName7.substring(6, nextName7.length())) - 1);
 				if (!jLabelMap.containsKey(nextName7)) {
 					jButtonMap.get(nextName7).doClick();
 				}

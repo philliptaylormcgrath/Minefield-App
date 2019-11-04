@@ -117,7 +117,8 @@ public class MainApp {
 			playMinefield(minefield);
 		} else {
 			System.out.println("BOOM! YOU LOSE :(");
-		//	displayMinefield(); // Need to make some method that prints the actual minefield array to the
+			MineText.revealMinefield(minefield);
+		    displayMinefield(); // Need to make some method that prints the actual minefield array to the
 								// Minefield_Display.txt file
 		}
 	}
