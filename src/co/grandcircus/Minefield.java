@@ -27,7 +27,7 @@ public class Minefield {
 		int mine;
 
 		// Set minefield to String[][] of width and height provided with constructor
-		minefield = new String[this.width][this.height];
+		minefield = new String[this.height][this.width];
 
 		// Populate every array index in the minefield with a 0
 		for (int h = 0; h < minefield.length; h++) {
@@ -40,8 +40,8 @@ public class Minefield {
 		// with
 		// constructor have been placed
 		while (mineCount < numBombs) {
-			int i = rand.nextInt(width);
-			int j = rand.nextInt(height);
+			int i = rand.nextInt(height);
+			int j = rand.nextInt(width);
 			if (!minefield[i][j].equals("*")) {
 				minefield[i][j] = "*";
 				mineCount++;
