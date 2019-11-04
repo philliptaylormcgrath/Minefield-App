@@ -2,12 +2,10 @@ package co.grandcircus;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Insets;
-import java.awt.SplashScreen;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -171,7 +169,7 @@ public class MinefieldGUI extends JFrame implements ActionListener {
 			HashMap<String, JLabel> jLabelMap) {
 		// Record the game start time
 		long start = System.currentTimeMillis();
-		
+
 		Clip clip = null;
 		try {
 			String fileName = "harvey house 2.wav";
@@ -215,7 +213,10 @@ public class MinefieldGUI extends JFrame implements ActionListener {
 
 						// Define action if the user clicked on a mine
 						if (square.getText().equals("*")) {
+							// Stop soundtrack loop
 							stopClip.stop();
+
+							// Create new clip of explosion noise and play it
 							Clip clip;
 							try {
 								String fileName = "explosion.wav";
@@ -229,16 +230,7 @@ public class MinefieldGUI extends JFrame implements ActionListener {
 								clip.start();
 							} catch (UnsupportedAudioFileException | IOException | LineUnavailableException e1) {
 							}
-							final SplashScreen splash = SplashScreen.getSplashScreen();
-					        if (splash == null) {
-					            System.out.println("SplashScreen.getSplashScreen() returned null");
-					            return;
-					        }
-					        Graphics2D g = splash.createGraphics();
-					        if (g == null) {
-					            System.out.println("g is null");
-					            return;
-					        }
+
 							// Clear and refresh the JFrame
 							getContentPane().removeAll();
 							revalidate();
@@ -368,7 +360,10 @@ public class MinefieldGUI extends JFrame implements ActionListener {
 							// If the counter equals the total number of non-mine squares in the minefield,
 							// the user has won
 							if (counter == (minefield.getHeight() * minefield.getWidth() - minefield.getNumBombs())) {
+								// Stop soundtrack loop
 								stopClip.stop();
+
+								// Create new clip of victory music and loop it
 								Clip clip;
 								try {
 									String fileName = "cool_disco .wav";
@@ -382,7 +377,7 @@ public class MinefieldGUI extends JFrame implements ActionListener {
 									clip.loop(Clip.LOOP_CONTINUOUSLY);
 								} catch (UnsupportedAudioFileException | IOException | LineUnavailableException e1) {
 								}
-								
+
 								getContentPane().removeAll(); // Clear the JFrame
 
 								// Create and add new JLabel letting user know they won
