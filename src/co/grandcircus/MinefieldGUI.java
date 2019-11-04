@@ -30,6 +30,12 @@ import javax.swing.border.EtchedBorder;
 
 public class MinefieldGUI extends JFrame implements ActionListener {
 
+	public static void main(String[] args) {
+		MinefieldGUI minefieldGUI = new MinefieldGUI();
+		minefieldGUI.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		minefieldGUI.setVisible(true);
+	}
+
 	private static final long serialVersionUID = 1L;
 	private JLabel minefieldDifficulty;
 	private JRadioButton easy;
@@ -95,43 +101,45 @@ public class MinefieldGUI extends JFrame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		//Declare variables 
+		// Declare variables
 		Minefield minefield;
-		//H
+		// HashMaps will store components added to JFrame to be referenced later
 		HashMap<String, JButton> jButtonMap = new HashMap<>();
 		HashMap<String, JLabel> jLabelMap = new HashMap<>();
 		String command = e.getActionCommand();
+
+		// Switch to generate a minefield based on user's difficulty entry
 		switch (command) {
 		case "easy":
 		case "medium":
 		case "hard":
 			minefield = generateMinefield(command);
-			addJButtons(minefield, jButtonMap, jLabelMap);
+			addJButtons(minefield, jButtonMap, jLabelMap); // Method populates JFrame with minefield
+			// Remove initial welcome menu and refresh JFrame
 			remove(difficultyBox);
 			remove(minefieldDifficulty);
 			revalidate();
 			pack();
 			break;
 		case "custom":
+			// Remove initial welcome menu
 			remove(difficultyBox);
 			remove(minefieldDifficulty);
+
+			// Generate a minefield with user inputs for width, height, and number of mines
+			// gathered from Input Dialog boxes
 			minefield = new Minefield(Integer.parseInt(JOptionPane.showInputDialog("Enter width")),
 					Integer.parseInt(JOptionPane.showInputDialog("Enter height")),
 					Integer.parseInt(JOptionPane.showInputDialog("Enter mines")));
-			addJButtons(minefield, jButtonMap, jLabelMap);
-			revalidate();
+			addJButtons(minefield, jButtonMap, jLabelMap); // Populate JFrame with minefield
+			revalidate(); // Refresh JFrame and adjust dimensions to match minefield
 			pack();
 
 			break;
 		}
 	}
 
-	public static void main(String[] args) {
-		MinefieldGUI minefieldGUI = new MinefieldGUI();
-		minefieldGUI.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		minefieldGUI.setVisible(true);
-	}
-
+	// Method creates a minefield based on user difficulty selection
 	public static Minefield generateMinefield(String difficulty) {
 		Minefield minefield = null;
 		switch (difficulty) {
@@ -148,9 +156,15 @@ public class MinefieldGUI extends JFrame implements ActionListener {
 		return minefield;
 	}
 
+	// Method populates the JFrame with components corresponding to the generated
+	// minefield and defines logic for the game
 	public void addJButtons(Minefield minefield, HashMap<String, JButton> jButtonMap,
 			HashMap<String, JLabel> jLabelMap) {
+		// Record the game start time
 		long start = System.currentTimeMillis();
+
+		// For loop creates JButtons corresponding to each square in the minefield and
+		// appends them to the JFrame
 		int counter = 1;
 		for (int i = 0; i < minefield.getHeight(); i++) {
 			for (int j = 0; j < minefield.getWidth(); j++) {
@@ -161,17 +175,27 @@ public class MinefieldGUI extends JFrame implements ActionListener {
 				JButton square = new JButton(new AbstractAction(display) {
 					private static final long serialVersionUID = 1L;
 
-					/**
-					 *
-					 */
+					// This method defines action on button click
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						remove(jButtonMap.get(name));
+						remove(jButtonMap.get(name)); // remove the button from the JFrame
+
+						// Create a new JLabel with the same name as the deleted button that displays
+						// the corresponding minefield square
 						JLabel square = new JLabel(minefield.getMinefield()[iVal][jVal], SwingConstants.CENTER);
+
+						// Define action if the user clicked on a mine
 						if (square.getText().equals("*")) {
+
+							// Clear and refresh the JFrame
 							getContentPane().removeAll();
 							revalidate();
+
+							// Create new GridBag layout
 							GridBagConstraints layoutConst = new GridBagConstraints();
+
+							// For loop repopulates the JFrame with JLabels displaying the revealed
+							// minefield
 							for (int i = 2; i < minefield.getMinefield().length; i++) {
 								for (int j = 0; j < minefield.getMinefield()[0].length; j++) {
 									JLabel clearLabel = new JLabel("", SwingConstants.CENTER);
@@ -207,27 +231,38 @@ public class MinefieldGUI extends JFrame implements ActionListener {
 							pack();
 							revalidate();
 
+							// Create a new JLabel to let the user know they lost and add it to the JFrame
+							JLabel youLose = new JLabel("YOU LOSE!");
 							layoutConst.gridx = 0;
 							layoutConst.gridy = 0;
-							JLabel youLose = new JLabel("YOU LOSE!");
 							layoutConst.gridwidth = minefield.getWidth();
 							add(youLose, layoutConst);
 
+							// Gather the end time for the game and calculate the total time elapsed since
+							// the game started
 							long finish = System.currentTimeMillis();
 							long timeElapsed = (finish - start) / 1000;
+
+							// Create a new JLabel to display total play time and add it to the JFrame
+							JLabel timer = new JLabel("TIME ELAPSED: " + timeElapsed);
 							layoutConst = new GridBagConstraints();
 							layoutConst.gridx = 0;
 							layoutConst.gridy = 1;
-							JLabel timer = new JLabel("TIME ELAPSED: " + timeElapsed);
 							layoutConst.gridwidth = minefield.getWidth();
 							add(timer, layoutConst);
+
+							// Refresh and resize the JFrame to match new elements
 							pack();
 							revalidate();
 
-						} else {
+						} else { // If the user did not click a bomb
+
+							// If the square was not adjacent to a bomb, set text to an empty string
 							if (square.getText().equals("0")) {
 								square.setText("");
-							} else if (square.getText().equals("*")) {
+							}
+							// Otherwise set text color according to the number of adjacent mines
+							else if (square.getText().equals("*")) {
 								removeAll();
 							} else if (square.getText().equals("1")) {
 								square.setForeground(Color.red);
@@ -240,21 +275,31 @@ public class MinefieldGUI extends JFrame implements ActionListener {
 							} else if (square.getText().equals("5")) {
 								square.setForeground(Color.PINK);
 							}
+
+							// Set reveal square background color and borders
 							Color myGrey = new Color(200, 200, 200);
 							square.setBackground(myGrey);
 							square.setOpaque(true);
 							square.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 							square.setPreferredSize(new Dimension(20, 20));
 							square.setName(name);
-							jLabelMap.put(name, square);
+							jLabelMap.put(name, square); // Add revealed square to JLabel HashMap to reference later
+
+							// Create new GridBag constraints
 							GridBagConstraints layoutConst = new GridBagConstraints();
 							layoutConst.gridx = jVal;
 							layoutConst.gridy = iVal;
-							add(square, layoutConst);
+							add(square, layoutConst); // Add revealed square to JFrame
 							revalidate();
+
+							// If the revealed square was a zero, call the method to reveal adjacent squares
 							if (minefield.getMinefield()[iVal][jVal].equals("0")) {
 								checkAdjacentSquares(jButtonMap, jLabelMap, minefield, iVal, jVal, name);
 							}
+
+							// For loop counts the number of times in which a non-bomb square in the
+							// minefield corresponds to a JLabel (i.e. has been revealed) vs. a JButton
+							// (i.e., still covered)
 							int counter = 0;
 							String nextName = "square1";
 							for (int i = 0; i < minefield.getHeight(); i++) {
@@ -265,64 +310,85 @@ public class MinefieldGUI extends JFrame implements ActionListener {
 									}
 									nextName = nextName.substring(0, 6) + Integer
 											.toString(Integer.parseInt(nextName.substring(6, nextName.length())) + 1);
-
 								}
 							}
-							System.out.println("TOTAL:" + counter);
-							System.out.println("TOTAL TO HIT: " + Integer
-									.toString(minefield.getHeight() * minefield.getWidth() - minefield.getNumBombs()));
+
+							// If the counter equals the total number of non-mine squares in the minefield,
+							// the user has won
 							if (counter == (minefield.getHeight() * minefield.getWidth() - minefield.getNumBombs())) {
-								getContentPane().removeAll();
+								getContentPane().removeAll(); // Clear the JFrame
+
+								// Create and add new JLabel letting user know they won
+								JLabel youWin = new JLabel("YOU WIN!");
 								layoutConst = new GridBagConstraints();
 								layoutConst.gridx = 0;
 								layoutConst.gridy = 0;
-								JLabel youWin = new JLabel("YOU WIN!");
 								add(youWin, layoutConst);
 
+								// Gather game end time and calculate total time spent
 								long finish = System.currentTimeMillis();
 								long timeElapsed = (finish - start) / 1000;
+
+								// Create new JLabel to show total time spent playing and add to Jframe
+								JLabel timer = new JLabel("TIME ELAPSED: " + timeElapsed);
 								layoutConst = new GridBagConstraints();
 								layoutConst.gridx = 0;
 								layoutConst.gridy = 1;
-								JLabel timer = new JLabel("TIME ELAPSED: " + timeElapsed);
 								add(timer, layoutConst);
-								revalidate();
+
+								revalidate();// Refresh JFrame
 							}
 						}
 					}
 				});
+
+				// Set revealed square background color
 				square.setBackground(Color.DARK_GRAY);
 				counter++;
-				Border borderUse = square.getBorder();
+				Border borderUse = square.getBorder(); // Set revealed square border to match covered square border
+
+				// Add right mouse click functionality to button
 				square.addMouseListener(new MouseAdapter() {
 					public void mouseClicked(MouseEvent e) {
+						// If the user right-clicks, set the covered square to a flag icon or clear any
+						// icon that's already there
 						if (e.getButton() == MouseEvent.BUTTON3) {
 							try {
-								Image img = ImageIO.read(getClass().getResource("flag.png"));
-								square.setIcon(new ImageIcon(img));
-								square.setIconTextGap(0);
-								square.setContentAreaFilled(false);
-								square.setBorder(borderUse);
+
+								if (square.getIcon() == null) {
+									Image img = ImageIO.read(getClass().getResource("flag.png"));
+									square.setIcon(new ImageIcon(img));
+									square.setIconTextGap(0);
+									square.setContentAreaFilled(false);
+									square.setBorder(borderUse);
+								} else {
+									square.setIcon(null);
+								}
 							} catch (IOException e1) {
 							}
+							// Refresh and resize JFrame
 							pack();
 							revalidate();
 						}
 					}
 				});
 
+				// Format created JButtons
 				square.setPreferredSize(new Dimension(20, 20));
-				jButtonMap.put(name, square);
+				jButtonMap.put(name, square); // Add the button the HashMap to reference later
 				GridBagConstraints layoutConst = new GridBagConstraints();
 				layoutConst.gridx = j;
 				layoutConst.gridy = i;
-				add(square, layoutConst);
+				add(square, layoutConst); // Add button to JFrame
 			}
 		}
 	}
 
+	// Method reveals adjacent squares if the user clicked on an empty square
 	public void checkAdjacentSquares(HashMap<String, JButton> jButtonMap, HashMap<String, JLabel> jLabelMap,
 			Minefield minefield, int iVal, int jVal, String name) {
+
+		// Declare strings that will correspond to HashMap keys for adjacent squares
 		String nextName = name;
 		String nextName1 = name;
 		String nextName2 = name;
@@ -332,6 +398,7 @@ public class MinefieldGUI extends JFrame implements ActionListener {
 		String nextName6 = name;
 		String nextName7 = name;
 
+		// Reveal all adjacent squares if they match an index location in the minefield
 		try {
 			if (!minefield.getMinefield()[iVal + 1][jVal].equals("*")) {
 				nextName = nextName.substring(0, 6) + Integer
