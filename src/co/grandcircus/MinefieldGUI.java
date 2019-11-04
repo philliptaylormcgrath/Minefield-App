@@ -170,19 +170,58 @@ public class MinefieldGUI extends JFrame implements ActionListener {
 						JLabel square = new JLabel(minefield.getMinefield()[iVal][jVal], SwingConstants.CENTER);
 						if (square.getText().equals("*")) {
 							getContentPane().removeAll();
+							revalidate();
 							GridBagConstraints layoutConst = new GridBagConstraints();
+							for (int i = 2; i < minefield.getMinefield().length; i++) {
+								for (int j = 0; j < minefield.getMinefield()[0].length; j++) {
+									JLabel clearLabel = new JLabel("",SwingConstants.CENTER);
+									if (minefield.getMinefield()[i - 2][j].equals("0")) {
+										clearLabel.setText("");
+									} else {
+										clearLabel.setText(minefield.getMinefield()[i - 2][j]);
+									}
+									if (clearLabel.getText().equals("*")) {
+										clearLabel.setForeground(Color.black);
+									} else if (clearLabel.getText().equals("1")) {
+										clearLabel.setForeground(Color.red);
+									} else if (clearLabel.getText().equals("2")) {
+										clearLabel.setForeground(Color.blue);
+									} else if (clearLabel.getText().equals("3")) {
+										clearLabel.setForeground(Color.MAGENTA);
+									} else if (clearLabel.getText().equals("4")) {
+										clearLabel.setForeground(Color.CYAN);
+									} else if (clearLabel.getText().equals("5")) {
+										clearLabel.setForeground(Color.PINK);
+									}
+
+									layoutConst.gridx = j;
+									layoutConst.gridy = i;
+									Color myGrey = new Color(200, 200, 200);
+									clearLabel.setBackground(myGrey);
+									clearLabel.setOpaque(true);
+									clearLabel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+									clearLabel.setPreferredSize(new Dimension(20, 20));
+									add(clearLabel, layoutConst);
+								}
+							}
+							pack();
+							revalidate();
+
 							layoutConst.gridx = 0;
 							layoutConst.gridy = 0;
 							JLabel youLose = new JLabel("YOU LOSE!");
+							layoutConst.gridwidth = minefield.getWidth();
 							add(youLose, layoutConst);
-							
+
 							long finish = System.currentTimeMillis();
 							long timeElapsed = (finish - start) / 1000;
 							layoutConst = new GridBagConstraints();
 							layoutConst.gridx = 0;
 							layoutConst.gridy = 1;
 							JLabel timer = new JLabel("TIME ELAPSED: " + timeElapsed);
-							add(timer,layoutConst);
+							layoutConst.gridwidth = minefield.getWidth();
+							add(timer, layoutConst);
+							pack();
 							revalidate();
 
 						} else {
@@ -233,11 +272,12 @@ public class MinefieldGUI extends JFrame implements ActionListener {
 									} else if (nextName.length() == 9) {
 										nextName = nextName.substring(0, 6)
 												+ Integer.toString(Integer.parseInt(nextName.substring(6, 9)) + 1);
-									}	
+									}
 								}
 							}
 							System.out.println("TOTAL:" + counter);
-							System.out.println("TOTAL TO HIT: " + Integer.toString(minefield.getHeight() * minefield.getWidth() - minefield.getNumBombs()));
+							System.out.println("TOTAL TO HIT: " + Integer
+									.toString(minefield.getHeight() * minefield.getWidth() - minefield.getNumBombs()));
 							if (counter == (minefield.getHeight() * minefield.getWidth() - minefield.getNumBombs())) {
 								getContentPane().removeAll();
 								layoutConst = new GridBagConstraints();
@@ -245,7 +285,7 @@ public class MinefieldGUI extends JFrame implements ActionListener {
 								layoutConst.gridy = 0;
 								JLabel youWin = new JLabel("YOU WIN!");
 								add(youWin, layoutConst);
-								
+
 								long finish = System.currentTimeMillis();
 								long timeElapsed = (finish - start) / 1000;
 								layoutConst = new GridBagConstraints();
@@ -285,22 +325,6 @@ public class MinefieldGUI extends JFrame implements ActionListener {
 				layoutConst.gridy = i;
 				add(square, layoutConst);
 			}
-		}
-	}
-
-	public void uncoverSquare(Minefield minefield, int i, int j) {
-		if (!minefield.getMinefield()[i][j].equals("*")) {
-			MineText.writeInput(minefield, j + 1, i + 1);
-		} else {
-			JTextField youLose = new JTextField();
-			youLose.setText("BOOM! YOU LOSE.");
-			GridBagConstraints layoutConst = new GridBagConstraints();
-			layoutConst.gridx = 1;
-			layoutConst.gridy = 1;
-			layoutConst.insets = new Insets(10, 10, 10, 10);
-			add(youLose, layoutConst);
-			super.pack();
-			revalidate();
 		}
 	}
 
